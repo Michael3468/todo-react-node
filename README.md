@@ -1,6 +1,8 @@
-# ecommerce-pern
+# todo-react-node
 
-After cloning project you need to build postgresql container in `server` folder
+After cloning project you need to add `.env` files to `server` and `client` folders
+
+Then build postgresql container in `server` folder
 
 ```
 sudo docker-compose up --build
@@ -14,6 +16,7 @@ npm run dev
 ```
 
 Then in `client` folder run:
+
 ```
 npm run start
 ```
