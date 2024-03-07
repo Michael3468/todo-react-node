@@ -4,6 +4,7 @@
     "fileupload",
     "keepachangelog",
     "stylelint",
+    "todos",
     "tsbuildinfo"
   ],
   "editor.formatOnSave": true
