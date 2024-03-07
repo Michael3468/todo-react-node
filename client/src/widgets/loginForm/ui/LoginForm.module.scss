@@ -1,0 +1,91 @@
+$border-radius: 7px;
+$box-shadow: rgb(117 117 117);
+$border-color: rgb(206 206 206);
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  max-width: 320px;
+  margin-right: auto;
+  margin-left: auto;
+  padding: 20px;
+  background-color: #FFF;
+  border-radius: $border-radius;
+  box-shadow: 0 0 10px $box-shadow;
+}
+
+.caption {
+  text-align: center;
+}
+
+.input {
+  padding: 5px 10px 5px 40px;
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+}
+
+.mail {
+  background-image: url('./assets/mail.svg');
+  background-repeat: no-repeat;
+  background-position: 10px 50%;
+  background-size: 20px;
+}
+
+.password {
+  background-image: url('./assets/password.svg');
+  background-repeat: no-repeat;
+  background-position: 10px 50%;
+  background-size: 20px;
+}
+
+.login-button {
+  padding: 7px;
+  color: white;
+  font-weight: bold;
+  background-color: #6358DC;
+  border-radius: $border-radius;
+  box-shadow: 2px 2px 10px $box-shadow;
+  transition: all 0.1s ease;
+
+  &:hover {
+    box-shadow: none;
+    transform: translate(1px, 1px);
+  }
+
+  &:disabled {
+    box-shadow: none;
+    transform: translate(1px, 1px);
+    pointer-events: none;
+  }
+}
+
+.login-register {
+  text-align: center;
+}
+
+.link {
+  color: #6800ff;
+}
+
+// reset styles for elements | now in main.css
+// button {
+//   margin: 0;
+//   padding: 0;
+//   border: none;
+//   background: none;
+//   font: inherit;
+//   color: inherit;
+//   cursor: pointer;
+//   outline: none;
+// }
+
+// input {
+//   margin: 0;
+//   padding: 0;
+//   background: none;
+//   border: 1px solid black;
+//   outline: none;
+//   font: inherit;
+//   color: inherit;
+// }
