@@ -4,9 +4,9 @@ import { $authHost, $host } from '.';
 import { USER_ROLE } from '../constants';
 import { IUser } from '../types';
 
-const registration = async (email: string, password: string): Promise<IUser> => {
+const registration = async (login: string, password: string): Promise<IUser> => {
   const { data } = await $host.post('api/user/registration', {
-    email,
+    login,
     password,
     role: USER_ROLE.USER,
   });
@@ -14,8 +14,9 @@ const registration = async (email: string, password: string): Promise<IUser> => 
   return jwtDecode(data.token);
 };
 
-const login = async (email: string, password: string): Promise<IUser> => {
-  const { data } = await $host.post('api/user/login', { email, password });
+// eslint-disable-next-line no-shadow
+const login = async (login: string, password: string): Promise<IUser> => {
+  const { data } = await $host.post('api/user/login', { login, password });
   localStorage.setItem('token', data.token);
   return jwtDecode(data.token);
 };

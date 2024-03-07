@@ -16,6 +16,7 @@ const authRoutes: TRoute[] = [
 ];
 
 const publicRoutes: TRoute[] = [
+  // TODO: remove cart
   {
     path: ROUTE.CART,
     Component: Cart,

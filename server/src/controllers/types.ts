@@ -1,24 +1,14 @@
 import { Request } from 'express';
-import { UploadedFile } from 'express-fileupload';
-
-interface IDeviceControllerCreateRequest extends Request {
-  files: {
-    img: UploadedFile;
-  };
-}
 
 interface IUserControllerCheckRequest extends Request {
   user: {
     id: number;
-    email: string;
+    login: string;
     role: string;
   };
 }
 
-type TBrandControllerCreateRequest = {
-  name: string;
-};
-
+// TODO 1-add-todo-controller
 type TDeviceControllerGetAllRequest = {
   brandId?: number;
   typeId?: number;
@@ -31,22 +21,15 @@ type TDeviceControllerQueryParams = {
   typeId?: number;
 };
 
-type TTypeControllerCreateRequest = {
-  name: string;
-};
-
 type IUserControllerRegistrationRequest = {
-  email: string,
-  role: string,
-  password: string,
+  login: string;
+  role: string;
+  password: string;
 };
 
 export {
-  IDeviceControllerCreateRequest,
   IUserControllerCheckRequest,
-  TBrandControllerCreateRequest,
   TDeviceControllerGetAllRequest,
   TDeviceControllerQueryParams,
-  TTypeControllerCreateRequest,
   IUserControllerRegistrationRequest,
 };

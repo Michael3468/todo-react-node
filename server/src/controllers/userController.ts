@@ -3,30 +3,29 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
 import ApiError from '../error/ApiError';
-import { User, Cart } from '../models/models';
+import { User } from '../models/models'; // TODO import from index
 import { IUserControllerCheckRequest, IUserControllerRegistrationRequest } from './types';
 
-const generateJwt = (id: number, email: string, role: string): string =>
-  jwt.sign({ id, email, role }, process.env.SECRET_KEY as string, { expiresIn: '1h' });
+const generateJwt = (id: number, login: string, role: string): string =>
+  jwt.sign({ id, login, role }, process.env.SECRET_KEY as string, { expiresIn: '1h' });
 
 class UserController {
   async registration(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
-      const { email, password, role }: IUserControllerRegistrationRequest = req.body;
-      if (!email || !password) {
-        return next(ApiError.badRequest({ message: 'Incorrect email or password' }));
+      const { login, password, role }: IUserControllerRegistrationRequest = req.body;
+      if (!login || !password) {
+        return next(ApiError.badRequest({ message: 'Incorrect login or password' }));
       }
 
-      const candidate = await User.findOne({ where: { email } });
+      const candidate = await User.findOne({ where: { login } });
       if (candidate) {
-        return next(ApiError.badRequest({ message: 'User with this email already exists' }));
+        return next(ApiError.badRequest({ message: 'User with this login already exists' }));
       }
 
       const hashPassword = await bcrypt.hash(password, 5);
-      const user = await User.create({ email, role, password: hashPassword });
+      const user = await User.create({ login, role, password: hashPassword });
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const cart = await Cart.create({ userId: user.id });
-      const token = generateJwt(user.id, user.email, user.role);
+      const token = generateJwt(user.id, user.login, user.role);
 
       return res.json({ token });
     } catch (error) {
@@ -36,8 +35,8 @@ class UserController {
 
   async login(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
-      const { email, password } = req.body;
-      const user = await User.findOne({ where: { email } });
+      const { login, password } = req.body;
+      const user = await User.findOne({ where: { login } });
       if (!user) {
         return next(ApiError.badRequest({ message: 'User not found' }));
       }
@@ -47,7 +46,7 @@ class UserController {
         return next(ApiError.badRequest({ message: 'Password is not correct' }));
       }
 
-      const token = generateJwt(user.id, user.email, user.role);
+      const token = generateJwt(user.id, user.login, user.role);
       return res.json({ token });
     } catch (error) {
       return next(ApiError.forbidden({ error: error as Error }));
@@ -56,8 +55,8 @@ class UserController {
 
   async check(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
-      const { id, email, role } = (req as IUserControllerCheckRequest).user;
-      const token = generateJwt(id, email, role);
+      const { id, login, role } = (req as IUserControllerCheckRequest).user;
+      const token = generateJwt(id, login, role);
       return res.json({ token });
     } catch (error) {
       return next(ApiError.forbidden({ error: error as Error }));
