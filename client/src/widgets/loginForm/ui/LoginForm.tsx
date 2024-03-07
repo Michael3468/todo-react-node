@@ -25,7 +25,7 @@ const LoginForm = () => {
 
       userStore.setUser(user);
       userStore.setIsAuth(true);
-      navigate(ROUTE.SHOP);
+      navigate(ROUTE.MAIN);
     } catch (error) {
       // eslint-disable-next-line no-console
       console.log(error);
@@ -44,7 +44,6 @@ const LoginForm = () => {
 
   return (
     <div className={styles['login-form']}>
-      {/* TODO: add font https://fonts.google.com/specimen/Protest+Riot?preview.text=Authorization */}
       <h3 className={styles.caption}>{isLoginRoute ? 'Authorization' : 'Registration'}</h3>
       <input
         className={`${styles.input} ${styles.mail}`}

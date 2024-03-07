@@ -21,7 +21,7 @@ const publicRoutes: TRoute[] = [
     Component: Cart,
   },
   {
-    path: ROUTE.SHOP,
+    path: ROUTE.MAIN,
     Component: Shop,
   },
   {

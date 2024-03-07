@@ -16,8 +16,8 @@ const Navigation = observer(() => {
   return (
     <Navbar bg="dark" variant="dark">
       <Container>
-        <NavLink to={ROUTE.SHOP} style={{ color: mainTheme.link.color }}>
-          BuyDevice
+        <NavLink to={ROUTE.MAIN} style={{ color: mainTheme.link.color }}>
+          E-SOFT
         </NavLink>
 
         {userStore.isAuth ? (
