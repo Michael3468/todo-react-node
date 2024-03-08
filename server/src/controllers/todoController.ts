@@ -1,8 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 
 import ApiError from '../error/ApiError';
-// TODO import from index
-import { Todo } from '../models/models';
+import { Todo } from '../models';
 import {
   // TODO check DeviceController types 1-add-todo-controller
   TDeviceControllerGetAllRequest,

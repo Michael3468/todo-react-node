@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
 import ApiError from '../error/ApiError';
-import { User } from '../models/models'; // TODO import from index
+import { User } from '../models';
 import { IUserControllerCheckRequest, IUserControllerRegistrationRequest } from './types';
 
 const generateJwt = (id: number, login: string, role: string): string =>
