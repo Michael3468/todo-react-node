@@ -1,15 +1,6 @@
 import { USER_ROLE } from '../constants';
 
-interface IType {
-  id: number;
-  name: string;
-}
-
-interface IBrand {
-  id: number;
-  name: string;
-}
-
+// TODO remove DeviceInfo
 interface IDeviceInfo {
   id: number;
   title: string;
@@ -41,4 +32,4 @@ type TDeviceData = {
   totalPrice: number;
 };
 
-export type { IType, IBrand, IDevice, IDeviceInfo, IUser, TUserRole, TDeviceData };
+export type { IDevice, IDeviceInfo, IUser, TUserRole, TDeviceData };

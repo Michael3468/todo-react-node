@@ -1,5 +1,6 @@
 import { $host, $authHost } from '.';
-import { IBrand, IDevice, IType } from '../types';
+// TODO rename to ITodo
+import { IDevice } from '../types';
 
 // TODO interfaces
 interface IFetchDevicesParams {
@@ -13,31 +14,6 @@ interface IDevices {
   count: number;
   rows: IDevice[];
 }
-
-const createType = async (type: { name: string }): Promise<IType> => {
-  const { data } = await $authHost.post('api/type', type);
-  return data;
-};
-
-const fetchTypes = async (): Promise<IType[]> => {
-  const { data } = await $host.get('api/type');
-  return data;
-};
-
-const createBrand = async (brand: { name: string }): Promise<IBrand> => {
-  const { data } = await $authHost.post('api/brand', brand);
-  return data;
-};
-
-const fetchBrands = async (): Promise<IBrand[]> => {
-  const { data } = await $host.get('api/brand');
-  return data;
-};
-
-const fetchOneBrand = async (id: number): Promise<IBrand> => {
-  const { data } = await $host.get(`api/brand/${id}`);
-  return data;
-};
 
 const createDevice = async (device: FormData): Promise<IDevice> => {
   const { data } = await $authHost.post('api/device', device);
@@ -67,11 +43,6 @@ const fetchOneDevice = async (id: number): Promise<IDevice> => {
 };
 
 export {
-  createType,
-  fetchTypes,
-  createBrand,
-  fetchBrands,
-  fetchOneBrand,
   createDevice,
   fetchDevices,
   fetchOneDevice,
