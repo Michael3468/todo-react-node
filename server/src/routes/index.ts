@@ -6,6 +6,6 @@ import userRouter from './userRouter';
 const router = Router();
 
 router.use('/user', userRouter);
-router.use('/device', todoRouter);
+router.use('/device', todoRouter); // TODO rename /todo
 
 export default router;
