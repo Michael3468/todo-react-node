@@ -1,3 +1,3 @@
-import { IDevice, IDeviceInfo, IUser, TDeviceData } from './store/types';
+import { IDevice, IDeviceInfo, IUser } from './store/types';
 
-export type { IDevice, IDeviceInfo, IUser, TDeviceData };
+export type { IDevice, IDeviceInfo, IUser };

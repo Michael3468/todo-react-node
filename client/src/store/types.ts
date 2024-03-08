@@ -27,9 +27,4 @@ interface IUser {
   role: TUserRole;
 }
 
-type TDeviceData = {
-  count: number;
-  totalPrice: number;
-};
-
-export type { IDevice, IDeviceInfo, IUser, TUserRole, TDeviceData };
+export type { IDevice, IDeviceInfo, IUser, TUserRole };

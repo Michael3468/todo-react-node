@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { ROUTE } from './constants';
-import { Admin, Auth, Cart, Device, Shop } from './pages';
+import { Admin, Auth, Shop } from './pages';
 
 type TRoute = {
   path: string;
@@ -16,14 +16,9 @@ const authRoutes: TRoute[] = [
 ];
 
 const publicRoutes: TRoute[] = [
-  // TODO: remove cart
-  {
-    path: ROUTE.CART,
-    Component: Cart,
-  },
   {
     path: ROUTE.MAIN,
-    Component: Shop,
+    Component: Shop, // TODO rename to Main
   },
   {
     path: ROUTE.LOGIN,
@@ -32,10 +27,6 @@ const publicRoutes: TRoute[] = [
   {
     path: ROUTE.REGISTRATION,
     Component: Auth,
-  },
-  {
-    path: `${ROUTE.DEVICE}/:id`,
-    Component: Device,
   },
 ];
 
