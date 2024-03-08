@@ -2,8 +2,10 @@ import { observer } from 'mobx-react-lite';
 import { FC, useEffect, useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 
+import { TodoPriorities } from '.';
 // TODO pass as prop
-import { createDevice } from '../../http/deviceAPI';
+import { createDevice } from '../../../http/deviceAPI';
+import RDropdown from './ui/RDropdown';
 
 type CreateTODOProps = {
   show: boolean;
@@ -22,17 +24,18 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, onHide }) => {
     formData.append('caption', caption);
     formData.append('description', description);
     formData.append('finishDate', finishDate ? finishDate.toISOString() : ''); // TODO string to DB
+    formData.append('priority', priority);
 
     createDevice(formData).then(() => onHide());
   };
 
   useEffect(() => {
-    if (caption && description) {
+    if (caption && description && finishDate && priority) {
       setAddTODODisabledButtonStatus(false);
     } else {
       setAddTODODisabledButtonStatus(true);
     }
-  }, [caption, description]);
+  }, [caption, description, finishDate, priority]);
 
   return (
     <Modal size="lg" centered show={show} onHide={onHide}>
@@ -63,11 +66,11 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, onHide }) => {
             type="date"
           />
 
-          <Form.Control
-            className="mt-3"
-            value={priority}
-            onChange={(e) => setPriority(e.target.value)}
-            placeholder="Enter priority"
+          <RDropdown
+            variable={priority}
+            setVariable={setPriority}
+            toggleText="Priority"
+            itemsArray={[...TodoPriorities]}
           />
         </Form>
       </Modal.Body>
