@@ -5,7 +5,7 @@ interface IUserAttributes {
   login: string;
   password: string;
   role: string;
-  name: string;
+  firstName: string;
   lastName: string;
   patronymic: string;
   supervisor: number;

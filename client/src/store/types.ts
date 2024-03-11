@@ -25,6 +25,9 @@ interface IUser {
   email: string;
   password: string;
   role: TUserRole;
+  name: string;
+  lastName: string;
+  patronymic: string;
 }
 
 export type { IDevice, IDeviceInfo, IUser, TUserRole };

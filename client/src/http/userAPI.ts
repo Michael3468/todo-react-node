@@ -4,11 +4,20 @@ import { $authHost, $host } from '.';
 import { USER_ROLE } from '../constants';
 import { IUser } from '../types';
 
-const registration = async (login: string, password: string): Promise<IUser> => {
+const registration = async (
+  login: string,
+  password: string,
+  firstName: string,
+  lastName: string,
+  patronymic: string,
+): Promise<IUser> => {
   const { data } = await $host.post('api/user/registration', {
     login,
     password,
     role: USER_ROLE.USER,
+    firstName,
+    lastName,
+    patronymic,
   });
   localStorage.setItem('token', data.token);
   return jwtDecode(data.token);

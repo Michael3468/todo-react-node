@@ -12,7 +12,14 @@ const generateJwt = (id: number, login: string, role: string): string =>
 class UserController {
   async registration(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
-      const { login, password, role }: IUserControllerRegistrationRequest = req.body;
+      const {
+        login,
+        password,
+        role,
+        firstName,
+        lastName,
+        patronymic,
+      }: IUserControllerRegistrationRequest = req.body;
       if (!login || !password) {
         return next(ApiError.badRequest({ message: 'Incorrect login or password' }));
       }
@@ -23,7 +30,14 @@ class UserController {
       }
 
       const hashPassword = await bcrypt.hash(password, 5);
-      const user = await User.create({ login, role, password: hashPassword });
+      const user = await User.create({
+        login,
+        role,
+        password: hashPassword,
+        firstName,
+        lastName,
+        patronymic,
+      });
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const token = generateJwt(user.id, user.login, user.role);
 

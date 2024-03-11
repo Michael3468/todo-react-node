@@ -12,7 +12,7 @@ const User = sequelize.define<IUser, IUserAttributes>('user', {
   login: { type: DataTypes.STRING, unique: true },
   password: { type: DataTypes.STRING },
   role: { type: DataTypes.STRING, defaultValue: USER_ROLE.USER },
-  name: { type: DataTypes.STRING, unique: false },
+  firstName: { type: DataTypes.STRING, unique: false },
   lastName: { type: DataTypes.STRING, unique: false },
   patronymic: { type: DataTypes.STRING, unique: false },
   supervisor: { type: DataTypes.INTEGER, unique: false },

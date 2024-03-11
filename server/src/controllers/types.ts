@@ -16,6 +16,7 @@ type TDeviceControllerGetAllRequest = {
   page?: number;
 };
 
+// TODO: remove
 type TDeviceControllerQueryParams = {
   brandId?: number;
   typeId?: number;
@@ -25,6 +26,9 @@ type IUserControllerRegistrationRequest = {
   login: string;
   role: string;
   password: string;
+  firstName: string;
+  lastName: string;
+  patronymic: string;
 };
 
 export {

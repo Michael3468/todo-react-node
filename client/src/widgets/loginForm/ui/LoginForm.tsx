@@ -15,13 +15,17 @@ const LoginForm = () => {
 
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
+  const [firstName, setFirstName] = useState<string>('');
+  const [lastName, setLastName] = useState<string>('');
+  const [patronymic, setPatronymic] = useState<string>('');
   const [emailValidStatus, setEmailValidStatus] = useState<boolean>(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);
 
   const handleLoginClick = async () => {
     try {
       const user = isLoginRoute
         ? await login(email, password)
-        : await registration(email, password);
+        : await registration(email, password, firstName, lastName, patronymic);
 
       userStore.setUser(user);
       userStore.setIsAuth(true);
@@ -42,6 +46,19 @@ const LoginForm = () => {
     setEmailValidStatus(isEmailValid(email));
   }, [email]);
 
+  useEffect(() => {
+    if (
+      // is login form filled
+      (isLoginRoute && emailValidStatus && !!password) ||
+      // is registration form filled
+      (!isLoginRoute && emailValidStatus && !!password && !!firstName && !!lastName && !!patronymic)
+    ) {
+      setIsButtonDisabled(false);
+    } else {
+      setIsButtonDisabled(true);
+    }
+  }, [emailValidStatus, password, firstName, lastName, patronymic, isLoginRoute]);
+
   return (
     <div className={styles['login-form']}>
       <h3 className={styles.caption}>{isLoginRoute ? 'Authorization' : 'Registration'}</h3>
@@ -61,15 +78,43 @@ const LoginForm = () => {
         placeholder="Password"
       />
 
+      {!isLoginRoute && (
+        <>
+          <input
+            className={`${styles.input} ${styles.text}`}
+            type="text"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            placeholder="First Name"
+          />
+
+          <input
+            className={`${styles.input} ${styles.text}`}
+            type="text"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            placeholder="Last Name"
+          />
+
+          <input
+            className={`${styles.input} ${styles.text}`}
+            type="text"
+            value={patronymic}
+            onChange={(e) => setPatronymic(e.target.value)}
+            placeholder="Patronymic Name"
+          />
+        </>
+      )}
+
       <button
         className={styles['login-button']}
         // TODO: color #6358DC to constants
         style={{
-          backgroundColor: `${emailValidStatus && password.length > 0 ? '#6358DC' : 'gray'}`,
+          backgroundColor: `${isButtonDisabled ? 'gray' : '#6358DC'}`,
         }}
         type="button"
         onClick={handleLoginClick}
-        disabled={!emailValidStatus || !(password.length > 0)}
+        disabled={isButtonDisabled}
       >
         {isLoginRoute ? 'Log In' : 'Register'}
       </button>
