@@ -1,9 +1,9 @@
 import {
   IUserControllerCheckRequest,
+  IUserControllerRegistrationRequest,
   TDeviceControllerGetAllRequest,
   TDeviceControllerQueryParams,
-  IUserControllerRegistrationRequest,
-} from './controllers/types';
+} from './controllers';
 import {
   TUserRole,
   ICheckAuthMiddlewareRequest,
@@ -11,10 +11,11 @@ import {
 } from './middleware/types';
 import { ITodo, ITodoAttributes, IUser, IUserAttributes } from './models';
 
-export {
+export type {
   TDeviceControllerGetAllRequest,
   TDeviceControllerQueryParams,
   TUserRole,
+  IUserControllerCheckRequest,
   IUserControllerRegistrationRequest,
   ICheckAuthMiddlewareRequest,
   ICheckRoleMiddlewareRequest,
@@ -22,5 +23,4 @@ export {
   ITodoAttributes,
   IUser,
   IUserAttributes,
-  IUserControllerCheckRequest,
 };

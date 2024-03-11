@@ -2,9 +2,9 @@ import bcrypt from 'bcrypt';
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 
-import ApiError from '../error/ApiError';
-import { User } from '../models';
-import { IUserControllerCheckRequest, IUserControllerRegistrationRequest } from './types';
+import { IUserControllerCheckRequest, IUserControllerRegistrationRequest } from '.';
+import ApiError from '../../error/ApiError';
+import { User } from '../../models';
 
 const generateJwt = (id: number, login: string, role: string): string =>
   jwt.sign({ id, login, role }, process.env.SECRET_KEY as string, { expiresIn: '1h' });

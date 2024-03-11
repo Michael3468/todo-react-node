@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
 import { USER_ROLE } from '../constants';
-import TodoController from '../controllers/todoController';
+import { TodoController } from '../controllers';
 import checkRole from '../middleware/checkRoleMiddleware';
 
 const todoRouter = Router();
