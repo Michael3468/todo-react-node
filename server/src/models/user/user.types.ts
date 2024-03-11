@@ -5,6 +5,10 @@ interface IUserAttributes {
   login: string;
   password: string;
   role: string;
+  name: string;
+  lastName: string;
+  patronymic: string;
+  supervisor: number;
 }
 interface IUser extends IUserAttributes, Model {}
 
