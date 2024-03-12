@@ -2,7 +2,7 @@ import { observer } from 'mobx-react-lite';
 import { FC, useEffect, useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 
-import { TodoPriorities } from '.';
+import { TodoPriorities, TodoStatuses } from '.';
 // TODO pass as prop
 import { createDevice } from '../../http/deviceAPI'; // TODO rename device -> todoAPI
 import RDropdown from './ui/RDropdown';
@@ -17,6 +17,7 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, onHide }) => {
   const [description, setDescription] = useState<string>('');
   const [finishDate, setFinishDate] = useState<Date | null>(null);
   const [priority, setPriority] = useState<string>('');
+  const [status, setStatus] = useState<string>('');
   const [addTODODisabledButtonStatus, setAddTODODisabledButtonStatus] = useState<boolean>(true);
 
   const addTODO = () => {
@@ -25,6 +26,7 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, onHide }) => {
     formData.append('description', description);
     formData.append('finishDate', finishDate ? finishDate.toISOString() : ''); // TODO string to DB
     formData.append('priority', priority);
+    formData.append('status', status);
 
     createDevice(formData).then(() => onHide());
   };
@@ -71,6 +73,13 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, onHide }) => {
             setVariable={setPriority}
             toggleText="Priority"
             itemsArray={[...TodoPriorities]}
+          />
+
+          <RDropdown
+            variable={status}
+            setVariable={setStatus}
+            toggleText="Status"
+            itemsArray={[...TodoStatuses]}
           />
         </Form>
       </Modal.Body>

@@ -10,14 +10,24 @@ class TodoController {
   async create(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
       // eslint-disable-next-line operator-linebreak
-      const { caption, description, finishDate, priority, creator, responsible }: ITodoAttributes =
-        req.body;
+      const {
+        caption,
+        description,
+        finishDate,
+        priority,
+        status,
+        creator,
+        responsible,
+      }: ITodoAttributes = req.body;
 
+      console.log('============================');
+      console.log(status);
       const todo: ITodo = await Todo.create({
         caption,
         description,
         finishDate,
         priority,
+        status,
         creator,
         responsible,
       });
@@ -56,7 +66,6 @@ class TodoController {
       const { id } = req.params;
       const todo = await Todo.findOne({
         where: { id },
-        // include: [{ model: DeviceInfo, as: 'info' }],
       });
 
       if (!todo) {
