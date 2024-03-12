@@ -18,6 +18,7 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, onHide }) => {
   const [finishDate, setFinishDate] = useState<Date | null>(null);
   const [priority, setPriority] = useState<string>('');
   const [status, setStatus] = useState<string>('');
+  const [creator, setCreator] = useState<number | null>(null);
   const [addTODODisabledButtonStatus, setAddTODODisabledButtonStatus] = useState<boolean>(true);
 
   const addTODO = () => {
@@ -27,6 +28,7 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, onHide }) => {
     formData.append('finishDate', finishDate ? finishDate.toISOString() : ''); // TODO string to DB
     formData.append('priority', priority);
     formData.append('status', status);
+    formData.append('creator', creator ? creator.toString() : '');
 
     createDevice(formData).then(() => onHide());
   };
@@ -38,6 +40,11 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, onHide }) => {
       setAddTODODisabledButtonStatus(true);
     }
   }, [caption, description, finishDate, priority]);
+
+  useEffect(() => {
+    const creatorId = localStorage.getItem('userId');
+    setCreator(Number(creatorId));
+  }, []);
 
   return (
     <Modal size="lg" centered show={show} onHide={onHide}>

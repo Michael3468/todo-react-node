@@ -41,7 +41,7 @@ class UserController {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const token = generateJwt(user.id, user.login, user.role);
 
-      return res.json({ token });
+      return res.json({ token, userId: user.id });
     } catch (error) {
       return next(ApiError.forbidden({ error: error as Error }));
     }
@@ -61,7 +61,7 @@ class UserController {
       }
 
       const token = generateJwt(user.id, user.login, user.role);
-      return res.json({ token });
+      return res.json({ token, userId: user.id });
     } catch (error) {
       return next(ApiError.forbidden({ error: error as Error }));
     }

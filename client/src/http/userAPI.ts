@@ -20,6 +20,7 @@ const registration = async (
     patronymic,
   });
   localStorage.setItem('token', data.token);
+  localStorage.setItem('userId', data.userId);
   return jwtDecode(data.token);
 };
 
@@ -27,6 +28,7 @@ const registration = async (
 const login = async (login: string, password: string): Promise<IUser> => {
   const { data } = await $host.post('api/user/login', { login, password });
   localStorage.setItem('token', data.token);
+  localStorage.setItem('userId', data.userId);
   return jwtDecode(data.token);
 };
 
