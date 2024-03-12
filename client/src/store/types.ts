@@ -22,7 +22,7 @@ type TUserRole = typeof USER_ROLE.ADMIN | typeof USER_ROLE.USER;
 
 interface IUser {
   id: number;
-  email: string;
+  login: string;
   password: string;
   role: TUserRole;
   name: string;

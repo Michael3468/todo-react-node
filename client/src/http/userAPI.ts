@@ -1,3 +1,4 @@
+import { AxiosResponse } from 'axios';
 import jwtDecode from 'jwt-decode';
 
 import { $authHost, $host } from '.';
@@ -38,4 +39,10 @@ const check = async (): Promise<IUser> => {
   return jwtDecode(data.token);
 };
 
-export { registration, login, check };
+const getAllUsers = async (): Promise<IUser[]> => {
+  const response: AxiosResponse<{ users: IUser[] }> = await $host.get('api/user/get-all-users');
+  const { data } = response;
+  return data.users;
+};
+
+export { registration, login, check, getAllUsers };

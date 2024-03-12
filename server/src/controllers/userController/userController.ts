@@ -76,6 +76,18 @@ class UserController {
       return next(ApiError.forbidden({ error: error as Error }));
     }
   }
+
+  async getAllUsers(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+    try {
+      const users = await User.findAll();
+
+      const modifiedUsers = users.map((user) => ({ id: user.id, login: user.login }));
+
+      return res.json({ users: modifiedUsers });
+    } catch (error) {
+      return next(ApiError.forbidden({ error: error as Error }));
+    }
+  }
 }
 
 export default UserController;

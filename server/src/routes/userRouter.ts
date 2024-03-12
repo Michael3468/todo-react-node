@@ -9,5 +9,6 @@ const userController = new UserController();
 userRouter.post('/registration', userController.registration);
 userRouter.post('/login', userController.login);
 userRouter.get('/auth', checkAuth, userController.check);
+userRouter.get('/get-all-users', userController.getAllUsers);
 
 export default userRouter;

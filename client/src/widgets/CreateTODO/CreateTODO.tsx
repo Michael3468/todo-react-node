@@ -5,6 +5,8 @@ import { Button, Form, Modal } from 'react-bootstrap';
 import { TodoPriorities, TodoStatuses } from '.';
 // TODO pass as prop
 import { createDevice } from '../../http/deviceAPI'; // TODO rename device -> todoAPI
+import { getAllUsers } from '../../http/userAPI';
+import { IUser } from '../../types';
 import RDropdown from './ui/RDropdown';
 
 type CreateTODOProps = {
@@ -19,6 +21,10 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, onHide }) => {
   const [priority, setPriority] = useState<string>('');
   const [status, setStatus] = useState<string>('');
   const [creator, setCreator] = useState<number | null>(null);
+  const [responsible, setResponsible] = useState<number | null>(null);
+  const [responsibleLogin, setResponsibleLogin] = useState<string>('');
+  const [allUsers, setAllUsers] = useState<IUser[]>([]);
+  const [userLogins, setUserLogins] = useState<string[]>([]);
   const [addTODODisabledButtonStatus, setAddTODODisabledButtonStatus] = useState<boolean>(true);
 
   const addTODO = () => {
@@ -29,6 +35,7 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, onHide }) => {
     formData.append('priority', priority);
     formData.append('status', status);
     formData.append('creator', creator ? creator.toString() : '');
+    formData.append('responsible', responsible ? responsible.toString() : '');
 
     createDevice(formData).then(() => onHide());
   };
@@ -46,6 +53,39 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, onHide }) => {
     setCreator(Number(creatorId));
   }, []);
 
+  const getUsers = async () => {
+    let users;
+    try {
+      users = await getAllUsers();
+      return users;
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
+    return users;
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const allUsersArr = await getUsers();
+      if (allUsersArr) {
+        setAllUsers(allUsersArr);
+        const userLoginsArr = allUsersArr.map((user) => user.login);
+        setUserLogins(userLoginsArr);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    const responsibleUser = allUsers.filter((user) => user.login === responsibleLogin);
+
+    if (responsibleUser.length) {
+      setResponsible(responsibleUser[0].id);
+    }
+  }, [allUsers, responsibleLogin]);
+
   return (
     <Modal size="lg" centered show={show} onHide={onHide}>
       <Modal.Header closeButton>
@@ -60,6 +100,7 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, onHide }) => {
             onChange={(e) => setCaption(e.target.value)}
             placeholder="Enter caption"
           />
+
           <Form.Control
             className="mt-3"
             value={description}
@@ -87,6 +128,13 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, onHide }) => {
             setVariable={setStatus}
             toggleText="Status"
             itemsArray={[...TodoStatuses]}
+          />
+
+          <RDropdown
+            variable={responsibleLogin}
+            setVariable={setResponsibleLogin}
+            toggleText="Responsible"
+            itemsArray={[...userLogins]}
           />
         </Form>
       </Modal.Body>

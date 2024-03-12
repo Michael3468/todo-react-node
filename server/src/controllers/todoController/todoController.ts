@@ -20,8 +20,6 @@ class TodoController {
         responsible,
       }: ITodoAttributes = req.body;
 
-      console.log('============================');
-      console.log(status);
       const todo: ITodo = await Todo.create({
         caption,
         description,
