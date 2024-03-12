@@ -1,13 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 
+// TODO check TDeviceControllerGetAllRequest and TDeviceControllerQueryParams types
 import { TDeviceControllerGetAllRequest, TDeviceControllerQueryParams } from '.';
 import ApiError from '../../error/ApiError';
 import { Todo } from '../../models';
-import {
-  // TODO check DeviceController types 1-add-todo-controller
-  ITodoAttributes,
-  ITodo,
-} from '../../types';
+import { ITodoAttributes, ITodo } from '../../types';
 
 class TodoController {
   async create(req: Request, res: Response, next: NextFunction): Promise<Response | void> {

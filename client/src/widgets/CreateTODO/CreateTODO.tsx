@@ -4,7 +4,7 @@ import { Button, Form, Modal } from 'react-bootstrap';
 
 import { TodoPriorities } from '.';
 // TODO pass as prop
-import { createDevice } from '../../../http/deviceAPI';
+import { createDevice } from '../../http/deviceAPI'; // TODO rename device -> todoAPI
 import RDropdown from './ui/RDropdown';
 
 type CreateTODOProps = {

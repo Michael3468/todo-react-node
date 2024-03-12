@@ -1,14 +1,14 @@
 import { Model } from 'sequelize';
 
-import { TodoPriority, TodoStatus } from './todo.constants';
+import { TTodoPriority, TTodoStatus } from './todo.constants';
 
 interface ITodoAttributes {
   id: number;
   caption: string;
   description: string;
   finishDate: Date;
-  priority: TodoPriority;
-  status: TodoStatus;
+  priority: TTodoPriority;
+  status: TTodoStatus;
   creator: string;
   responsible: string;
 }

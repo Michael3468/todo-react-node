@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Button, Col, Container } from 'react-bootstrap';
 
-import { CreateTODO } from '../components/modals';
 import { mainTheme } from '../constants';
+import { CreateTODO } from '../widgets';
 
 const Admin = () => {
   const [todoVisible, setTodoVisible] = useState<boolean>(false);
