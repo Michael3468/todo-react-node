@@ -1,3 +1,4 @@
-import LoginForm from './loginForm/ui/LoginForm';
+import CreateTODO from './CreateTODO';
+import LoginForm from './loginForm';
 
-export default LoginForm;
+export { CreateTODO, LoginForm };

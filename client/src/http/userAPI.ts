@@ -1,22 +1,35 @@
+import { AxiosResponse } from 'axios';
 import jwtDecode from 'jwt-decode';
 
 import { $authHost, $host } from '.';
 import { USER_ROLE } from '../constants';
 import { IUser } from '../types';
 
-const registration = async (email: string, password: string): Promise<IUser> => {
+const registration = async (
+  login: string,
+  password: string,
+  firstName: string,
+  lastName: string,
+  patronymic: string,
+): Promise<IUser> => {
   const { data } = await $host.post('api/user/registration', {
-    email,
+    login,
     password,
     role: USER_ROLE.USER,
+    firstName,
+    lastName,
+    patronymic,
   });
   localStorage.setItem('token', data.token);
+  localStorage.setItem('userId', data.userId);
   return jwtDecode(data.token);
 };
 
-const login = async (email: string, password: string): Promise<IUser> => {
-  const { data } = await $host.post('api/user/login', { email, password });
+// eslint-disable-next-line no-shadow
+const login = async (login: string, password: string): Promise<IUser> => {
+  const { data } = await $host.post('api/user/login', { login, password });
   localStorage.setItem('token', data.token);
+  localStorage.setItem('userId', data.userId);
   return jwtDecode(data.token);
 };
 
@@ -26,4 +39,10 @@ const check = async (): Promise<IUser> => {
   return jwtDecode(data.token);
 };
 
-export { registration, login, check };
+const getAllUsers = async (): Promise<IUser[]> => {
+  const response: AxiosResponse<{ users: IUser[] }> = await $host.get('api/user/get-all-users');
+  const { data } = response;
+  return data.users;
+};
+
+export { registration, login, check, getAllUsers };

@@ -25,6 +25,10 @@ $border-color: rgb(206 206 206);
   border-radius: $border-radius;
 }
 
+.text {
+  padding-left: 10px;
+}
+
 .mail {
   background-image: url('./assets/mail.svg');
   background-repeat: no-repeat;

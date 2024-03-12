@@ -1,7 +1,5 @@
 import Admin from './Admin';
-import Auth from './Auth/Auth';
-import Cart from './Cart';
-import Device from './Device';
+import Auth from './Auth';
 import Shop from './Shop';
 
-export { Admin, Auth, Cart, Device, Shop };
+export { Admin, Auth, Shop };

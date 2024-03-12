@@ -3,6 +3,7 @@
 .icon {
   display: block;
 
+
   @media screen and (min-width: $navigation-icons-min-width-breakpoint) {
     display: none;
   }

@@ -1,11 +1,9 @@
 @import '../../assets/styles/constants.scss';
 
-$navigation-icons-min-width-breakpoint: 428px;
-
 .icon {
   display: block;
 
-  @media screen and (min-width: #{$navigation-icons-min-width-breakpoint}) {
+  @media screen and (min-width: $navigation-icons-min-width-breakpoint) {
     display: none;
   }
 }

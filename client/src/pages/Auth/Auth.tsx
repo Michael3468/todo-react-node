@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 
-import LoginForm from '../../widgets';
+import { LoginForm } from '../../widgets';
 import styles from './Auth.module.scss';
 
 const Auth = observer(() => (

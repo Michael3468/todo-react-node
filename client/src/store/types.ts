@@ -1,15 +1,6 @@
 import { USER_ROLE } from '../constants';
 
-interface IType {
-  id: number;
-  name: string;
-}
-
-interface IBrand {
-  id: number;
-  name: string;
-}
-
+// TODO remove DeviceInfo
 interface IDeviceInfo {
   id: number;
   title: string;
@@ -31,14 +22,12 @@ type TUserRole = typeof USER_ROLE.ADMIN | typeof USER_ROLE.USER;
 
 interface IUser {
   id: number;
-  email: string;
+  login: string;
   password: string;
   role: TUserRole;
+  name: string;
+  lastName: string;
+  patronymic: string;
 }
 
-type TDeviceData = {
-  count: number;
-  totalPrice: number;
-};
-
-export type { IType, IBrand, IDevice, IDeviceInfo, IUser, TUserRole, TDeviceData };
+export type { IDevice, IDeviceInfo, IUser, TUserRole };
