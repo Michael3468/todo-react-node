@@ -1,6 +1,6 @@
 import { USER_ROLE } from '../constants';
 
-type TUserRole = typeof USER_ROLE.ADMIN | typeof USER_ROLE.USER;
+type TUserRole = (typeof USER_ROLE)[keyof typeof USER_ROLE];
 
 interface IUser {
   id: number;

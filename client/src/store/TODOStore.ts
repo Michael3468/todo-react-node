@@ -22,6 +22,10 @@ class TODOStore {
     return toJS(this._todos);
   }
 
+  clearTodos() {
+    this._todos = [];
+  }
+
   fetchAllTodos = async () => {
     try {
       this.isLoading = true;

@@ -7,11 +7,13 @@ import { StoreContext } from '../../index';
 import styles from './LogoutButton.module.scss';
 
 const LogoutButton = () => {
-  const { userStore } = useContext(StoreContext);
+  const { userStore, todoStore } = useContext(StoreContext);
 
   const handleLogOutButton = () => {
     userStore.setUser(null);
     userStore.setIsAuth(false);
+
+    todoStore.clearTodos();
   };
 
   return (
