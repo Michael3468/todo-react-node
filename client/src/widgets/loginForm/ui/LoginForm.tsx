@@ -29,6 +29,7 @@ const LoginForm = () => {
 
       userStore.setUser(user);
       userStore.setIsAuth(true);
+
       navigate(ROUTE.MAIN);
     } catch (error) {
       // eslint-disable-next-line no-console

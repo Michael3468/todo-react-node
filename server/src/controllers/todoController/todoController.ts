@@ -8,15 +8,8 @@ class TodoController {
   async create(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
       // eslint-disable-next-line operator-linebreak
-      const {
-        caption,
-        description,
-        finishDate,
-        priority,
-        status,
-        creator,
-        responsible,
-      }: ITodo = req.body;
+      const { caption, description, finishDate, priority, status, creator, responsible }: ITodo =
+        req.body;
 
       const todo: ITodo = await Todo.create({
         caption,

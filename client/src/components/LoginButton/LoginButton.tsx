@@ -3,7 +3,7 @@ import { IoMdLogIn } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
 
 import { ROUTE, mainTheme } from '../../constants';
-import styles from './index.module.scss';
+import styles from './LoginButton.module.scss';
 
 const LoginButton = () => {
   const navigate = useNavigate();
