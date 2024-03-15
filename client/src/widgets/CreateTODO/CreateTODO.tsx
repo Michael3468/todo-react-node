@@ -1,155 +1,196 @@
 import { observer } from 'mobx-react-lite';
-import { FC, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 
 import { TodoPriorities, TodoStatuses } from '.';
-// TODO pass as prop
-import { createDevice } from '../../http/deviceAPI'; // TODO rename device -> todoAPI
+import { StoreContext } from '../..';
+import { createTODO, editTODO } from '../../http/todoAPI';
 import { getAllUsers } from '../../http/userAPI';
-import { IUser } from '../../types';
+import { ITodo, IUser } from '../../types';
 import RDropdown from './ui/RDropdown';
+
+type TTodoText = 'Edit' | 'Create';
 
 type CreateTODOProps = {
   show: boolean;
+  todoId?: number;
+  todoText: TTodoText;
   onHide: () => void;
 };
 
-const CreateTODO: FC<CreateTODOProps> = observer(({ show, onHide }) => {
-  const [caption, setCaption] = useState<string>('');
-  const [description, setDescription] = useState<string>('');
-  const [finishDate, setFinishDate] = useState<Date | null>(null);
-  const [priority, setPriority] = useState<string>('');
-  const [status, setStatus] = useState<string>('');
-  const [creator, setCreator] = useState<number | null>(null);
-  const [responsible, setResponsible] = useState<number | null>(null);
-  const [responsibleLogin, setResponsibleLogin] = useState<string>('');
-  const [allUsers, setAllUsers] = useState<IUser[]>([]);
-  const [userLogins, setUserLogins] = useState<string[]>([]);
-  const [addTODODisabledButtonStatus, setAddTODODisabledButtonStatus] = useState<boolean>(true);
+const CreateTODO: FC<CreateTODOProps> = observer(
+  ({ show, todoId, todoText, onHide }) => {
+    const { todoStore } = useContext(StoreContext);
 
-  const addTODO = () => {
-    const formData = new FormData();
-    formData.append('caption', caption);
-    formData.append('description', description);
-    formData.append('finishDate', finishDate ? finishDate.toISOString() : ''); // TODO string to DB
-    formData.append('priority', priority);
-    formData.append('status', status);
-    formData.append('creator', creator ? creator.toString() : '');
-    formData.append('responsible', responsible ? responsible.toString() : '');
+    const [todo, setTodo] = useState<ITodo | null>(null);
+    const [caption, setCaption] = useState<string>('');
+    const [description, setDescription] = useState<string>('');
+    const [finishDate, setFinishDate] = useState<Date | null>(null);
+    const [priority, setPriority] = useState<string>('');
+    const [status, setStatus] = useState<string>('');
+    const [creator, setCreator] = useState<number | null>(null);
+    const [responsible, setResponsible] = useState<number | null>(null);
+    const [responsibleLogin, setResponsibleLogin] = useState<string>('');
+    const [allUsers, setAllUsers] = useState<IUser[]>([]);
+    const [userLogins, setUserLogins] = useState<string[]>([]);
+    const [addTODODisabledButtonStatus, setAddTODODisabledButtonStatus] = useState<boolean>(true);
 
-    createDevice(formData).then(() => onHide());
-  };
+    const handleTODO = async () => {
+      const formData = new FormData();
+      formData.append('caption', caption);
+      formData.append('description', description);
+      formData.append('finishDate', finishDate ? finishDate.toISOString() : '');
+      formData.append('priority', priority);
+      formData.append('status', status);
+      formData.append('creator', creator ? creator.toString() : '');
+      formData.append('responsible', responsible ? responsible.toString() : '');
 
-  useEffect(() => {
-    if (caption && description && finishDate && priority) {
-      setAddTODODisabledButtonStatus(false);
-    } else {
-      setAddTODODisabledButtonStatus(true);
-    }
-  }, [caption, description, finishDate, priority]);
-
-  useEffect(() => {
-    const creatorId = localStorage.getItem('userId');
-    setCreator(Number(creatorId));
-  }, []);
-
-  const getUsers = async () => {
-    let users;
-    try {
-      users = await getAllUsers();
-      return users;
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(error);
-    }
-    return users;
-  };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const allUsersArr = await getUsers();
-      if (allUsersArr) {
-        setAllUsers(allUsersArr);
-        const userLoginsArr = allUsersArr.map((user) => user.login);
-        setUserLogins(userLoginsArr);
+      if (todoText === 'Create') {
+        await createTODO(formData).then(() => onHide());
+      } else {
+        formData.append('id', todoId ? todoId.toString() : '');
+        await editTODO(formData).then(() => onHide());
       }
+
+      todoStore.fetchAllTodos();
     };
 
-    fetchData();
-  }, []);
+    useEffect(() => {
+      if (todoId) {
+        const currTodo = todoStore.getTodoById(todoId);
+        if (currTodo) {
+          setTodo(currTodo);
+        }
+      }
+    }, [todoId, todoStore, todoStore.todos]);
 
-  useEffect(() => {
-    const responsibleUser = allUsers.filter((user) => user.login === responsibleLogin);
+    useEffect(() => {
+      if (todo) {
+        setCaption(todo.caption);
+        setDescription(todo.description);
+        setFinishDate(new Date(todo.finishDate));
+        setPriority(todo.priority);
+        setStatus(todo.status);
+        setCreator(Number(todo.creator)); // TODO string type to BD ?
+        setResponsible(Number(todo.responsible));
+      }
+    }, [todo]);
 
-    if (responsibleUser.length) {
-      setResponsible(responsibleUser[0].id);
-    }
-  }, [allUsers, responsibleLogin]);
+    useEffect(() => {
+      if (caption && description && finishDate && priority) {
+        setAddTODODisabledButtonStatus(false);
+      } else {
+        setAddTODODisabledButtonStatus(true);
+      }
+    }, [caption, description, finishDate, priority]);
 
-  return (
-    <Modal size="lg" centered show={show} onHide={onHide}>
-      <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">Add TODO</Modal.Title>
-      </Modal.Header>
+    useEffect(() => {
+      const creatorId = localStorage.getItem('userId');
+      setCreator(Number(creatorId));
+    }, []);
 
-      <Modal.Body>
-        <Form>
-          <Form.Control
-            className="mt-3"
-            value={caption}
-            onChange={(e) => setCaption(e.target.value)}
-            placeholder="Enter caption"
-          />
+    const getUsers = async () => {
+      let users;
+      try {
+        users = await getAllUsers();
+        return users;
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.log(error);
+      }
+      return users;
+    };
 
-          <Form.Control
-            className="mt-3"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Enter description"
-          />
+    useEffect(() => {
+      const fetchUsers = async () => {
+        const allUsersArr = await getUsers();
+        if (allUsersArr) {
+          setAllUsers(allUsersArr);
+          const userLoginsArr = allUsersArr.map((user) => user.login);
+          setUserLogins(userLoginsArr);
+        }
+      };
 
-          <Form.Control
-            className="mt-3"
-            value={finishDate ? finishDate.toISOString().split('T')[0] : ''}
-            onChange={(e) => setFinishDate(new Date(e.target.value))}
-            placeholder="Enter finish date"
-            type="date"
-          />
+      fetchUsers();
+    }, []);
 
-          <RDropdown
-            variable={priority}
-            setVariable={setPriority}
-            toggleText="Priority"
-            itemsArray={[...TodoPriorities]}
-          />
+    useEffect(() => {
+      const responsibleUser = allUsers.filter((user) => user.login === responsibleLogin);
 
-          <RDropdown
-            variable={status}
-            setVariable={setStatus}
-            toggleText="Status"
-            itemsArray={[...TodoStatuses]}
-          />
+      if (responsibleUser.length) {
+        setResponsible(responsibleUser[0].id);
+      }
+    }, [allUsers, responsibleLogin]);
 
-          <RDropdown
-            variable={responsibleLogin}
-            setVariable={setResponsibleLogin}
-            toggleText="Responsible"
-            itemsArray={[...userLogins]}
-          />
-        </Form>
-      </Modal.Body>
+    return (
+      <Modal size="lg" centered show={show} onHide={onHide}>
+        <Modal.Header closeButton>
+          <Modal.Title id="contained-modal-title-vcenter">{`${todoText} TODO`}</Modal.Title>
+        </Modal.Header>
 
-      <Modal.Footer>
-        <Button variant="outline-danger" onClick={onHide}>
-          Close
-        </Button>
+        <Modal.Body>
+          <Form>
+            <Form.Control
+              className="mt-3"
+              value={caption}
+              onChange={(e) => setCaption(e.target.value)}
+              placeholder="Enter caption"
+            />
 
-        <Button variant="outline-success" disabled={addTODODisabledButtonStatus} onClick={addTODO}>
-          Add TODO
-        </Button>
-      </Modal.Footer>
-    </Modal>
-  );
-});
+            <Form.Control
+              className="mt-3"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Enter description"
+            />
+
+            <Form.Control
+              className="mt-3"
+              value={finishDate ? finishDate.toISOString().split('T')[0] : ''}
+              onChange={(e) => setFinishDate(new Date(e.target.value))}
+              placeholder="Enter finish date"
+              type="date"
+            />
+
+            <RDropdown
+              variable={priority}
+              setVariable={setPriority}
+              toggleText="Priority"
+              itemsArray={[...TodoPriorities]}
+            />
+
+            <RDropdown
+              variable={status}
+              setVariable={setStatus}
+              toggleText="Status"
+              itemsArray={[...TodoStatuses]}
+            />
+
+            <RDropdown
+              variable={responsibleLogin}
+              setVariable={setResponsibleLogin}
+              toggleText="Responsible"
+              itemsArray={[...userLogins]}
+            />
+          </Form>
+        </Modal.Body>
+
+        <Modal.Footer>
+          <Button variant="outline-danger" onClick={onHide}>
+            Close
+          </Button>
+
+          <Button
+            variant="outline-success"
+            disabled={addTODODisabledButtonStatus}
+            onClick={handleTODO}
+          >
+            {`${todoText} TODO`}
+          </Button>
+        </Modal.Footer>
+      </Modal>
+    );
+  },
+);
 
 export default CreateTODO;

@@ -1,5 +1,5 @@
 import Admin from './Admin';
 import Auth from './Auth';
-import Shop from './Shop';
+import Main from './Main';
 
-export { Admin, Auth, Shop };
+export { Admin, Auth, Main };

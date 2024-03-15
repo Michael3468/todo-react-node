@@ -1,6 +1,4 @@
 import TodoController, {
-  TDeviceControllerGetAllRequest,
-  TDeviceControllerQueryParams,
 } from './todoController';
 import UserController, {
   IUserControllerCheckRequest,
@@ -8,8 +6,6 @@ import UserController, {
 } from './userController';
 
 export type {
-  TDeviceControllerGetAllRequest,
-  TDeviceControllerQueryParams,
   IUserControllerCheckRequest,
   IUserControllerRegistrationRequest,
 };

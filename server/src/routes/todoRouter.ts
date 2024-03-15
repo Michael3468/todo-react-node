@@ -8,7 +8,7 @@ const todoRouter = Router();
 const todoController = new TodoController();
 
 todoRouter.post('/', checkRole(USER_ROLE.ADMIN), todoController.create);
+todoRouter.patch('/', todoController.update);
 todoRouter.get('/', todoController.getAll);
-todoRouter.get('/:id', todoController.getOne);
 
 export default todoRouter;

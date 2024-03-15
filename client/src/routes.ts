@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { ROUTE } from './constants';
-import { Admin, Auth, Shop } from './pages';
+import { Admin, Auth, Main } from './pages';
 
 type TRoute = {
   path: string;
@@ -18,7 +18,7 @@ const authRoutes: TRoute[] = [
 const publicRoutes: TRoute[] = [
   {
     path: ROUTE.MAIN,
-    Component: Shop, // TODO rename to Main
+    Component: Main,
   },
   {
     path: ROUTE.LOGIN,
