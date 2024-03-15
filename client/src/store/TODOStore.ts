@@ -18,6 +18,10 @@ class TODOStore {
     this._todos = todos;
   }
 
+  get todos(): ITodo[] {
+    return toJS(this._todos);
+  }
+
   fetchAllTodos = async () => {
     try {
       this.isLoading = true;
@@ -32,10 +36,6 @@ class TODOStore {
       }, 200); // for test long loading
     }
   };
-
-  get todos(): ITodo[] {
-    return toJS(this._todos);
-  }
 
   getTodoById(id: number): ITodo | undefined {
     return toJS(this._todos.find((todo) => todo.id === id));

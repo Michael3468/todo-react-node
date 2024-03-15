@@ -16,12 +16,12 @@ class UserStore {
     this._isAuth = bool;
   }
 
-  setUser(user: IUser | null) {
-    this._user = user;
-  }
-
   get isAuth(): boolean {
     return this._isAuth;
+  }
+
+  setUser(user: IUser | null) {
+    this._user = user;
   }
 
   get user(): IUser | null {
