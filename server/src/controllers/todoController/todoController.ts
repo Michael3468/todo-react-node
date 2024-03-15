@@ -1,10 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 
-// TODO check TDeviceControllerGetAllRequest and TDeviceControllerQueryParams types
-import { TDeviceControllerGetAllRequest, TDeviceControllerQueryParams } from '.';
 import ApiError from '../../error/ApiError';
 import { Todo } from '../../models';
-import { ITodoAttributes, ITodo } from '../../types';
+import { ITodo } from '../../types';
 
 class TodoController {
   async create(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
@@ -18,7 +16,7 @@ class TodoController {
         status,
         creator,
         responsible,
-      }: ITodoAttributes = req.body;
+      }: ITodo = req.body;
 
       const todo: ITodo = await Todo.create({
         caption,
@@ -36,41 +34,50 @@ class TodoController {
     }
   }
 
-  async getAll(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+  async update(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
-      const DEVICES_ON_PAGE = 10;
       const {
-        brandId,
-        typeId,
-        limit = DEVICES_ON_PAGE,
-        page = 1,
-      }: TDeviceControllerGetAllRequest = req.query;
-      const offset = page * limit - limit;
+        id,
+        caption,
+        description,
+        finishDate,
+        priority,
+        status,
+        creator,
+        responsible,
+      }: ITodo = req.body;
 
-      const queryParams: TDeviceControllerQueryParams = {};
-      if (brandId) queryParams.brandId = brandId;
-      if (typeId) queryParams.typeId = typeId;
+      const [updatedRowsCount, updatedTodo]: [number, ITodo[]] = await Todo.update(
+        {
+          caption,
+          description,
+          finishDate,
+          priority,
+          status,
+          creator,
+          responsible,
+        },
+        {
+          where: { id },
+          returning: true,
+        },
+      );
 
-      const todos = await Todo.findAndCountAll({ where: queryParams, limit, offset });
+      if (updatedRowsCount === 0) {
+        return next(ApiError.badRequest({ message: 'Todo not found' }));
+      }
 
-      return res.json(todos);
+      return res.json(updatedTodo[0]);
     } catch (error) {
-      return next(ApiError.internal({ error: error as Error }));
+      return next(ApiError.badRequest({ error: error as Error }));
     }
   }
 
-  async getOne(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
+  async getAll(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
-      const { id } = req.params;
-      const todo = await Todo.findOne({
-        where: { id },
-      });
+      const todos = await Todo.findAll();
 
-      if (!todo) {
-        return res.status(404).json({ message: 'Todo not found' });
-      }
-
-      return res.json(todo);
+      return res.json(todos);
     } catch (error) {
       return next(ApiError.internal({ error: error as Error }));
     }

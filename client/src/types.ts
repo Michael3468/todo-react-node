@@ -1,3 +1,4 @@
-import { IDevice, IDeviceInfo, IUser } from './store/types';
+import { ITodo } from './components';
+import { IUser } from './store/types';
 
-export type { IDevice, IDeviceInfo, IUser };
+export type { IUser, ITodo };

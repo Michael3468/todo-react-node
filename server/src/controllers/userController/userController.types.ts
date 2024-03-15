@@ -8,13 +8,13 @@ interface IUserControllerCheckRequest extends Request {
   };
 }
 
-type IUserControllerRegistrationRequest = {
+interface IUserControllerRegistrationRequest {
   login: string;
   role: string;
   password: string;
   firstName: string;
   lastName: string;
   patronymic: string;
-};
+}
 
 export type { IUserControllerCheckRequest, IUserControllerRegistrationRequest };

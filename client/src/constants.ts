@@ -3,8 +3,6 @@ const ROUTE = {
   LOGIN: '/login',
   REGISTRATION: '/registration',
   MAIN: '/',
-  CART: '/cart',
-  DEVICE: '/device',
 };
 
 const USER_ROLE = {

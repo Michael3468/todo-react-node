@@ -1,8 +1,6 @@
 import {
   IUserControllerCheckRequest,
   IUserControllerRegistrationRequest,
-  TDeviceControllerGetAllRequest,
-  TDeviceControllerQueryParams,
 } from './controllers';
 import {
   TUserRole,
@@ -12,8 +10,6 @@ import {
 import { ITodo, ITodoAttributes, IUser, IUserAttributes } from './models';
 
 export type {
-  TDeviceControllerGetAllRequest,
-  TDeviceControllerQueryParams,
   TUserRole,
   IUserControllerCheckRequest,
   IUserControllerRegistrationRequest,

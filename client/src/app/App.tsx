@@ -33,6 +33,7 @@ const App = observer(() => {
       .finally(() => setLoading(false));
   }, [userStore]);
 
+  // TODO refactor
   if (loading) {
     return (
       <div

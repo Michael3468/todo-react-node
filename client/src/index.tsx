@@ -1,20 +1,27 @@
+import { spy } from 'mobx';
 import React, { createContext } from 'react';
 import ReactDOM from 'react-dom/client';
 
 import App from './app/App';
 import reportWebVitals from './reportWebVitals';
-// TODO: re-export stores from store/index.ts
-import DeviceStore from './store/DeviceStore';
-import UserStore from './store/UserStore';
+import { UserStore, TODOStore } from './store';
 
 interface IStoreContext {
   userStore: UserStore;
-  deviceStore: DeviceStore;
+  todoStore: TODOStore;
 }
 // eslint-disable-next-line import/prefer-default-export
 export const StoreContext = createContext<IStoreContext>({
   userStore: new UserStore(),
-  deviceStore: new DeviceStore(),
+  todoStore: new TODOStore(),
+});
+
+// mobx debug
+spy((event) => {
+  if (event.type === 'action') {
+    // eslint-disable-next-line no-console
+    console.debug(event);
+  }
 });
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
@@ -23,7 +30,7 @@ root.render(
     <StoreContext.Provider
       value={{
         userStore: new UserStore(),
-        deviceStore: new DeviceStore(),
+        todoStore: new TODOStore(),
       }}
     >
       <App />

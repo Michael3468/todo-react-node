@@ -1,7 +1,7 @@
 import AppRouter from './AppRouter';
-import DeviceItem from './DeviceItem';
-import DeviceList from './DeviceList';
 import Navigation from './Navigation';
-import Pages from './Pages';
+import TODOItem, { ITodo } from './TODOItem';
+import TODOList from './TODOList';
 
-export { AppRouter, DeviceItem, DeviceList, Navigation, Pages };
+export type { ITodo };
+export { AppRouter, TODOItem, TODOList, Navigation };

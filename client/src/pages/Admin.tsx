@@ -17,7 +17,7 @@ const Admin = () => {
           Add TODO
         </Button>
 
-        <CreateTODO show={todoVisible} onHide={() => setTodoVisible(false)} />
+        <CreateTODO show={todoVisible} onHide={() => setTodoVisible(false)} todoText="Create" />
       </Col>
     </Container>
   );
