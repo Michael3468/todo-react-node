@@ -3,7 +3,7 @@ import { IoMdSettings } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
 
 import { ROUTE, mainTheme } from '../../constants';
-import styles from './index.module.scss';
+import styles from './AdminPanelButton.module.scss';
 
 const AdminPanelButton = () => {
   const navigate = useNavigate();

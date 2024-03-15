@@ -14,7 +14,7 @@ const Admin = () => {
     >
       <Col xs={8} sm={8} md={6} className="d-flex flex-column ms-auto me-auto mt-auto mb-auto">
         <Button variant="outline-dark" className="mt-4" onClick={() => setTodoVisible(true)}>
-          Add TODO
+          New TODO
         </Button>
 
         <CreateTODO show={todoVisible} onHide={() => setTodoVisible(false)} todoText="Create" />

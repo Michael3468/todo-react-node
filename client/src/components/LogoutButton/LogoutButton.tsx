@@ -4,14 +4,16 @@ import { IoMdLogOut } from 'react-icons/io';
 
 import { mainTheme } from '../../constants';
 import { StoreContext } from '../../index';
-import styles from './index.module.scss';
+import styles from './LogoutButton.module.scss';
 
 const LogoutButton = () => {
-  const { userStore } = useContext(StoreContext);
+  const { userStore, todoStore } = useContext(StoreContext);
 
   const handleLogOutButton = () => {
     userStore.setUser(null);
     userStore.setIsAuth(false);
+
+    todoStore.clearTodos();
   };
 
   return (
