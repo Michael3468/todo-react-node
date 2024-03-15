@@ -18,179 +18,178 @@ type CreateTODOProps = {
   onHide: () => void;
 };
 
-const CreateTODO: FC<CreateTODOProps> = observer(
-  ({ show, todoId, todoText, onHide }) => {
-    const { todoStore } = useContext(StoreContext);
+const CreateTODO: FC<CreateTODOProps> = observer(({ show, todoId, todoText, onHide }) => {
+  const { todoStore, userStore } = useContext(StoreContext);
 
-    const [todo, setTodo] = useState<ITodo | null>(null);
-    const [caption, setCaption] = useState<string>('');
-    const [description, setDescription] = useState<string>('');
-    const [finishDate, setFinishDate] = useState<Date | null>(null);
-    const [priority, setPriority] = useState<string>('');
-    const [status, setStatus] = useState<string>('');
-    const [creator, setCreator] = useState<number | null>(null);
-    const [responsible, setResponsible] = useState<number | null>(null);
-    const [responsibleLogin, setResponsibleLogin] = useState<string>('');
-    const [allUsers, setAllUsers] = useState<IUser[]>([]);
-    const [userLogins, setUserLogins] = useState<string[]>([]);
-    const [addTODODisabledButtonStatus, setAddTODODisabledButtonStatus] = useState<boolean>(true);
+  const [todo, setTodo] = useState<ITodo | null>(null);
+  const [caption, setCaption] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
+  const [finishDate, setFinishDate] = useState<Date | null>(null);
+  const [priority, setPriority] = useState<string>('');
+  const [status, setStatus] = useState<string>('');
+  const [creator, setCreator] = useState<number | null>(null);
+  const [responsible, setResponsible] = useState<number | null>(null);
+  const [responsibleLogin, setResponsibleLogin] = useState<string>('');
+  const [allUsers, setAllUsers] = useState<IUser[]>([]);
+  const [userLogins, setUserLogins] = useState<string[]>([]);
+  const [addTODODisabledButtonStatus, setAddTODODisabledButtonStatus] = useState<boolean>(true);
 
-    const handleTODO = async () => {
-      const formData = new FormData();
-      formData.append('caption', caption);
-      formData.append('description', description);
-      formData.append('finishDate', finishDate ? finishDate.toISOString() : '');
-      formData.append('priority', priority);
-      formData.append('status', status);
-      formData.append('creator', creator ? creator.toString() : '');
-      formData.append('responsible', responsible ? responsible.toString() : '');
+  const handleTODO = async () => {
+    const formData = new FormData();
+    formData.append('caption', caption);
+    formData.append('description', description);
+    formData.append('finishDate', finishDate ? finishDate.toISOString() : '');
+    formData.append('priority', priority);
+    formData.append('status', status);
+    formData.append('creator', creator ? creator.toString() : '');
+    formData.append('responsible', responsible ? responsible.toString() : '');
 
-      if (todoText === 'Create') {
-        await createTODO(formData).then(() => onHide());
-      } else {
-        formData.append('id', todoId ? todoId.toString() : '');
-        await editTODO(formData).then(() => onHide());
+    if (todoText === 'Create') {
+      await createTODO(formData).then(() => onHide());
+    } else {
+      formData.append('id', todoId ? todoId.toString() : '');
+      await editTODO(formData).then(() => onHide());
+    }
+
+    todoStore.fetchAllTodos();
+  };
+
+  useEffect(() => {
+    if (todoId) {
+      const currTodo = todoStore.getTodoById(todoId);
+      if (currTodo) {
+        setTodo(currTodo);
       }
+    }
+  }, [todoId, todoStore, todoStore.todos]);
 
-      todoStore.fetchAllTodos();
-    };
+  useEffect(() => {
+    if (todo) {
+      setCaption(todo.caption);
+      setDescription(todo.description);
+      setFinishDate(new Date(todo.finishDate));
+      setPriority(todo.priority);
+      setStatus(todo.status);
+      setCreator(Number(todo.creator)); // TODO string type to BD ?
+      setResponsible(Number(todo.responsible));
+    }
+  }, [todo]);
 
-    useEffect(() => {
-      if (todoId) {
-        const currTodo = todoStore.getTodoById(todoId);
-        if (currTodo) {
-          setTodo(currTodo);
-        }
-      }
-    }, [todoId, todoStore, todoStore.todos]);
+  useEffect(() => {
+    if (caption && description && finishDate && priority) {
+      setAddTODODisabledButtonStatus(false);
+    } else {
+      setAddTODODisabledButtonStatus(true);
+    }
+  }, [caption, description, finishDate, priority]);
 
-    useEffect(() => {
-      if (todo) {
-        setCaption(todo.caption);
-        setDescription(todo.description);
-        setFinishDate(new Date(todo.finishDate));
-        setPriority(todo.priority);
-        setStatus(todo.status);
-        setCreator(Number(todo.creator)); // TODO string type to BD ?
-        setResponsible(Number(todo.responsible));
-      }
-    }, [todo]);
+  useEffect(() => {
+    if (userStore.user?.id) {
+      setCreator(userStore.user.id);
+    }
+  }, [userStore]);
 
-    useEffect(() => {
-      if (caption && description && finishDate && priority) {
-        setAddTODODisabledButtonStatus(false);
-      } else {
-        setAddTODODisabledButtonStatus(true);
-      }
-    }, [caption, description, finishDate, priority]);
-
-    useEffect(() => {
-      const creatorId = localStorage.getItem('userId');
-      setCreator(Number(creatorId));
-    }, []);
-
-    const getUsers = async () => {
-      let users;
-      try {
-        users = await getAllUsers();
-        return users;
-      } catch (error) {
-        // eslint-disable-next-line no-console
-        console.log(error);
-      }
+  const getUsers = async () => {
+    let users;
+    try {
+      users = await getAllUsers();
       return users;
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.log(error);
+    }
+    return users;
+  };
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      const allUsersArr = await getUsers();
+      if (allUsersArr) {
+        setAllUsers(allUsersArr);
+        const userLoginsArr = allUsersArr.map((user) => user.login);
+        setUserLogins(userLoginsArr);
+      }
     };
 
-    useEffect(() => {
-      const fetchUsers = async () => {
-        const allUsersArr = await getUsers();
-        if (allUsersArr) {
-          setAllUsers(allUsersArr);
-          const userLoginsArr = allUsersArr.map((user) => user.login);
-          setUserLogins(userLoginsArr);
-        }
-      };
+    fetchUsers();
+  }, []);
 
-      fetchUsers();
-    }, []);
+  useEffect(() => {
+    const responsibleUser = allUsers.filter((user) => user.login === responsibleLogin);
 
-    useEffect(() => {
-      const responsibleUser = allUsers.filter((user) => user.login === responsibleLogin);
+    if (responsibleUser.length) {
+      setResponsible(responsibleUser[0].id);
+    }
+  }, [allUsers, responsibleLogin]);
 
-      if (responsibleUser.length) {
-        setResponsible(responsibleUser[0].id);
-      }
-    }, [allUsers, responsibleLogin]);
+  return (
+    <Modal size="lg" centered show={show} onHide={onHide}>
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter">{`${todoText} TODO`}</Modal.Title>
+      </Modal.Header>
 
-    return (
-      <Modal size="lg" centered show={show} onHide={onHide}>
-        <Modal.Header closeButton>
-          <Modal.Title id="contained-modal-title-vcenter">{`${todoText} TODO`}</Modal.Title>
-        </Modal.Header>
+      <Modal.Body>
+        <Form>
+          <Form.Control
+            className="mt-3"
+            value={caption}
+            onChange={(e) => setCaption(e.target.value)}
+            placeholder="Enter caption"
+          />
 
-        <Modal.Body>
-          <Form>
-            <Form.Control
-              className="mt-3"
-              value={caption}
-              onChange={(e) => setCaption(e.target.value)}
-              placeholder="Enter caption"
-            />
+          <Form.Control
+            className="mt-3"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Enter description"
+          />
 
-            <Form.Control
-              className="mt-3"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Enter description"
-            />
+          <Form.Control
+            className="mt-3"
+            value={finishDate ? finishDate.toISOString().split('T')[0] : ''}
+            onChange={(e) => setFinishDate(new Date(e.target.value))}
+            placeholder="Enter finish date"
+            type="date"
+          />
 
-            <Form.Control
-              className="mt-3"
-              value={finishDate ? finishDate.toISOString().split('T')[0] : ''}
-              onChange={(e) => setFinishDate(new Date(e.target.value))}
-              placeholder="Enter finish date"
-              type="date"
-            />
+          <RDropdown
+            variable={priority}
+            setVariable={setPriority}
+            toggleText="Priority"
+            itemsArray={[...TodoPriorities]}
+          />
 
-            <RDropdown
-              variable={priority}
-              setVariable={setPriority}
-              toggleText="Priority"
-              itemsArray={[...TodoPriorities]}
-            />
+          <RDropdown
+            variable={status}
+            setVariable={setStatus}
+            toggleText="Status"
+            itemsArray={[...TodoStatuses]}
+          />
 
-            <RDropdown
-              variable={status}
-              setVariable={setStatus}
-              toggleText="Status"
-              itemsArray={[...TodoStatuses]}
-            />
+          <RDropdown
+            variable={responsibleLogin}
+            setVariable={setResponsibleLogin}
+            toggleText="Responsible"
+            itemsArray={[...userLogins]}
+          />
+        </Form>
+      </Modal.Body>
 
-            <RDropdown
-              variable={responsibleLogin}
-              setVariable={setResponsibleLogin}
-              toggleText="Responsible"
-              itemsArray={[...userLogins]}
-            />
-          </Form>
-        </Modal.Body>
+      <Modal.Footer>
+        <Button variant="outline-danger" onClick={onHide}>
+          Close
+        </Button>
 
-        <Modal.Footer>
-          <Button variant="outline-danger" onClick={onHide}>
-            Close
-          </Button>
-
-          <Button
-            variant="outline-success"
-            disabled={addTODODisabledButtonStatus}
-            onClick={handleTODO}
-          >
-            {`${todoText} TODO`}
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    );
-  },
-);
+        <Button
+          variant="outline-success"
+          disabled={addTODODisabledButtonStatus}
+          onClick={handleTODO}
+        >
+          {`${todoText} TODO`}
+        </Button>
+      </Modal.Footer>
+    </Modal>
+  );
+});
 
 export default CreateTODO;
