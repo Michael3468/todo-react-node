@@ -1,5 +1,4 @@
 const ROUTE = {
-  ADMIN: '/admin',
   LOGIN: '/login',
   REGISTRATION: '/registration',
   MAIN: '/',
