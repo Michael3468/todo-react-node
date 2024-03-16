@@ -7,7 +7,7 @@ import { CreateTODO, TODOList } from '../widgets';
 import { StoreContext } from '..';
 
 const Main = observer(() => {
-  const { createTodoStore } = useContext(StoreContext);
+  const { createTodoStore, userStore } = useContext(StoreContext);
 
   const handleCreateTodo = () => {
     createTodoStore.showCreateTodo();
@@ -19,13 +19,11 @@ const Main = observer(() => {
     <Container>
       <Col>
         <Col md={12}>
-          <Button
-            variant="outline-dark"
-            className="mt-4"
-            onClick={() => handleCreateTodo()}
-          >
-            New TODO
-          </Button>
+          {userStore.isAuth && (
+            <Button variant="outline-dark" className="mt-4" onClick={() => handleCreateTodo()}>
+              New TODO
+            </Button>
+          )}
 
           <CreateTODO
             show={createTodoStore.visible}
