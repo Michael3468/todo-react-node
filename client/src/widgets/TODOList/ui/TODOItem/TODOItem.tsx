@@ -1,8 +1,9 @@
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Card, Col } from 'react-bootstrap';
 
+import { ITodo } from '.';
 import { CreateTODO } from '../../..';
-import { ITodo } from './TODOItem.types';
+import { TCaptionColors, getTodoCaptionColor } from '../../lib';
 
 type TODOItemProps = {
   todo: ITodo;
@@ -11,6 +12,12 @@ type TODOItemProps = {
 const TODOItem: FC<TODOItemProps> = ({ todo }) => {
   const date = new Date(todo.finishDate.toLocaleString());
   const [createTodoVisible, setCreateTodoVisible] = useState<boolean>(false);
+  const [captionColor, setCaptionColor] = useState<TCaptionColors>('gray');
+
+  useEffect(() => {
+    const capColor = getTodoCaptionColor(todo);
+    setCaptionColor(capColor);
+  }, [todo]);
 
   return (
     <>
@@ -18,7 +25,7 @@ const TODOItem: FC<TODOItemProps> = ({ todo }) => {
         <Card style={{ cursor: 'pointer' }} className="w-100">
           <div className="p-2">
             <div className="d-flex justify-content-between flex-column">
-              <div>{`caption: ${todo.caption}`}</div>
+              <div style={{ color: `${captionColor}` }}>{`caption: ${todo.caption}`}</div>
               <div>{`priority: ${todo.priority}`}</div>
               <div>{`finish date: ${date.toDateString()}`}</div>
               <div>{`responsible: ${todo.responsible}`}</div>
@@ -28,6 +35,7 @@ const TODOItem: FC<TODOItemProps> = ({ todo }) => {
         </Card>
       </Col>
 
+      {/* TODO move to Main page */}
       <CreateTODO
         show={createTodoVisible}
         onHide={() => setCreateTodoVisible(false)}
