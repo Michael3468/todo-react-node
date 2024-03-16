@@ -4,14 +4,16 @@ import ReactDOM from 'react-dom/client';
 
 import App from './app/App';
 import reportWebVitals from './reportWebVitals';
-import { UserStore, TODOStore } from './store';
+import { CreateTODOStore, UserStore, TODOStore } from './store';
 
 interface IStoreContext {
+  createTodoStore: CreateTODOStore;
   userStore: UserStore;
   todoStore: TODOStore;
 }
 // eslint-disable-next-line import/prefer-default-export
 export const StoreContext = createContext<IStoreContext>({
+  createTodoStore: new CreateTODOStore(),
   userStore: new UserStore(),
   todoStore: new TODOStore(),
 });
@@ -29,6 +31,7 @@ root.render(
   <React.StrictMode>
     <StoreContext.Provider
       value={{
+        createTodoStore: new CreateTODOStore(),
         userStore: new UserStore(),
         todoStore: new TODOStore(),
       }}

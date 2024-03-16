@@ -8,13 +8,12 @@ import { createTODO, editTODO } from '../../http/todoAPI';
 import { getAllUsers } from '../../http/userAPI';
 import { RDropdown } from '../../shared/ui';
 import { ITodo, IUser } from '../../types';
-
-type TTodoText = 'Edit' | 'Create';
+import { TTodoText } from './CreateTODO.types';
 
 type CreateTODOProps = {
   show: boolean;
-  todoId?: number;
   todoText: TTodoText;
+  todoId: number | null;
   onHide: () => void;
 };
 

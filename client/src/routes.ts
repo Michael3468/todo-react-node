@@ -1,19 +1,12 @@
 import React from 'react';
 
 import { ROUTE } from './constants';
-import { Admin, Auth, Main } from './pages';
+import { Auth, Main } from './pages';
 
 type TRoute = {
   path: string;
   Component: React.ComponentType;
 };
-
-const authRoutes: TRoute[] = [
-  {
-    path: ROUTE.ADMIN,
-    Component: Admin,
-  },
-];
 
 const publicRoutes: TRoute[] = [
   {
@@ -30,4 +23,5 @@ const publicRoutes: TRoute[] = [
   },
 ];
 
-export { authRoutes, publicRoutes };
+// eslint-disable-next-line import/prefer-default-export
+export { publicRoutes };

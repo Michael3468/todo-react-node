@@ -1,16 +1,44 @@
 import { observer } from 'mobx-react-lite';
-import { Col, Container } from 'react-bootstrap';
+import { useContext } from 'react';
+import { Button, Col, Container } from 'react-bootstrap';
 
-import { TODOList } from '../widgets';
+import { CreateTODO, TODOList } from '../widgets';
 
-const Main = observer(() => (
-  <Container>
-    <Col>
-      <Col md={12}>
-        <TODOList />
+import { StoreContext } from '..';
+
+const Main = observer(() => {
+  const { createTodoStore } = useContext(StoreContext);
+
+  const handleCreateTodo = () => {
+    createTodoStore.showCreateTodo();
+    createTodoStore.setText('Create');
+    createTodoStore.setTodoId(null);
+  };
+
+  return (
+    <Container>
+      <Col>
+        <Col md={12}>
+          <Button
+            variant="outline-dark"
+            className="mt-4"
+            onClick={() => handleCreateTodo()}
+          >
+            New TODO
+          </Button>
+
+          <CreateTODO
+            show={createTodoStore.visible}
+            onHide={() => createTodoStore.hideCreateTodo()}
+            todoText={createTodoStore.text}
+            todoId={createTodoStore.todoId}
+          />
+
+          <TODOList />
+        </Col>
       </Col>
-    </Col>
-  </Container>
-));
+    </Container>
+  );
+});
 
 export default Main;

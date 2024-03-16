@@ -3,9 +3,8 @@ import { useContext } from 'react';
 import { Container, Navbar, Nav } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 
-import { USER_ROLE, ROUTE, mainTheme } from '../constants';
+import { ROUTE, mainTheme } from '../constants';
 import { StoreContext } from '../index';
-import AdminPanelButton from './AdminPanelButton';
 import LoginButton from './LoginButton';
 import LogoutButton from './LogoutButton';
 
@@ -21,7 +20,6 @@ const Navigation = observer(() => {
 
         {userStore.isAuth ? (
           <Nav style={{ color: mainTheme.link.color }}>
-            {userStore.user?.role === USER_ROLE.ADMIN && <AdminPanelButton />}
             <LogoutButton />
           </Nav>
         ) : (
