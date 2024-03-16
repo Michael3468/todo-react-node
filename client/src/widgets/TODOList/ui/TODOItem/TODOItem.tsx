@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import { Card, Col } from 'react-bootstrap';
 
-import { CreateTODO } from '../../widgets';
+import { CreateTODO } from '../../..';
 import { ITodo } from './TODOItem.types';
 
 type TODOItemProps = {

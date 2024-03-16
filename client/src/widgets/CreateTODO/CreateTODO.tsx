@@ -6,8 +6,8 @@ import { TodoPriorities, TodoStatuses } from '.';
 import { StoreContext } from '../..';
 import { createTODO, editTODO } from '../../http/todoAPI';
 import { getAllUsers } from '../../http/userAPI';
+import { RDropdown } from '../../shared/ui';
 import { ITodo, IUser } from '../../types';
-import RDropdown from './ui/RDropdown';
 
 type TTodoText = 'Edit' | 'Create';
 
@@ -27,8 +27,8 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, todoId, todoText, onHi
   const [finishDate, setFinishDate] = useState<Date | null>(null);
   const [priority, setPriority] = useState<string>('');
   const [status, setStatus] = useState<string>('');
-  const [creator, setCreator] = useState<number | null>(null);
-  const [responsible, setResponsible] = useState<number | null>(null);
+  const [creator, setCreator] = useState<string | null>(null);
+  const [responsible, setResponsible] = useState<string | null>(null);
   const [responsibleLogin, setResponsibleLogin] = useState<string>('');
   const [allUsers, setAllUsers] = useState<IUser[]>([]);
   const [userLogins, setUserLogins] = useState<string[]>([]);
@@ -70,8 +70,8 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, todoId, todoText, onHi
       setFinishDate(new Date(todo.finishDate));
       setPriority(todo.priority);
       setStatus(todo.status);
-      setCreator(Number(todo.creator)); // TODO string type to BD ?
-      setResponsible(Number(todo.responsible));
+      setCreator(todo.creator);
+      setResponsible(todo.responsible);
     }
   }, [todo]);
 
@@ -85,7 +85,7 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, todoId, todoText, onHi
 
   useEffect(() => {
     if (userStore.user?.id) {
-      setCreator(userStore.user.id);
+      setCreator(userStore.user.login);
     }
   }, [userStore]);
 
@@ -118,7 +118,7 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, todoId, todoText, onHi
     const responsibleUser = allUsers.filter((user) => user.login === responsibleLogin);
 
     if (responsibleUser.length) {
-      setResponsible(responsibleUser[0].id);
+      setResponsible(responsibleUser[0].login);
     }
   }, [allUsers, responsibleLogin]);
 
