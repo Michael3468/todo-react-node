@@ -10,7 +10,11 @@ const sortTodos = (todosArr: ITodo[], sortType: TSortAdminConst): ITodo[] => {
         return dateA.getTime() - dateB.getTime();
       });
     case 'responsible':
-      return [...todosArr].sort((a, b) => Number(a.responsible) - Number(b.responsible));
+      return [...todosArr].sort((a, b) => {
+        if (a.responsible < b.responsible) return -1;
+        if (a.responsible > b.responsible) return 1;
+        return 0;
+      });
     default:
       // last updated
       return [...todosArr].sort((a, b) => {
