@@ -12,6 +12,7 @@ const LogoutButton = () => {
   const handleLogOutButton = () => {
     userStore.setUser(null);
     userStore.setIsAuth(false);
+    localStorage.removeItem('token');
 
     todoStore.clearTodos();
   };

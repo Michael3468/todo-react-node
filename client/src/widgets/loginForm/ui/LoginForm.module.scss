@@ -72,24 +72,8 @@ $border-color: rgb(206 206 206);
   color: #6800ff;
 }
 
-// reset styles for elements | now in main.css
-// button {
-//   margin: 0;
-//   padding: 0;
-//   border: none;
-//   background: none;
-//   font: inherit;
-//   color: inherit;
-//   cursor: pointer;
-//   outline: none;
-// }
-
-// input {
-//   margin: 0;
-//   padding: 0;
-//   background: none;
-//   border: 1px solid black;
-//   outline: none;
-//   font: inherit;
-//   color: inherit;
-// }
+.error {
+  max-height: 30px;
+  color: red;
+  text-align: center;
+}
