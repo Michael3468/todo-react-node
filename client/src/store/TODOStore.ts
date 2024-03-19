@@ -5,11 +5,11 @@ import { ITodo } from '../types';
 
 class TODOStore {
   private _todos: ITodo[];
-  isLoading: boolean;
+  private _isLoading: boolean;
 
   constructor() {
     this._todos = [];
-    this.isLoading = false;
+    this._isLoading = false;
 
     makeAutoObservable(this);
   }
@@ -26,9 +26,17 @@ class TODOStore {
     this._todos = [];
   }
 
+  setIsLoading(status: boolean) {
+    this._isLoading = status;
+  }
+
+  get isLoading(): boolean {
+    return this._isLoading;
+  }
+
   fetchAllTodos = async () => {
     try {
-      this.isLoading = true;
+      this.setIsLoading(true);
       const todos = await getAllTODOS();
       this.setTodos(todos);
     } catch (error) {
@@ -36,7 +44,7 @@ class TODOStore {
       console.log(error);
     } finally {
       setTimeout(() => {
-        this.isLoading = false;
+        this.setIsLoading(false);
       }, 200); // for test long loading
     }
   };
