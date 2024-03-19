@@ -24,7 +24,7 @@ const App = observer(() => {
       .catch((error) => {
         const { message } = error.response.data;
         // eslint-disable-next-line no-console
-        console.log(message);
+        console.error(message);
 
         if (message === 'jwt expired') {
           localStorage.removeItem('token');

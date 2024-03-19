@@ -1,3 +1,4 @@
+import { AxiosError } from 'axios';
 import { useContext, useEffect, useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 
@@ -6,6 +7,10 @@ import { ROUTE } from '../../../constants';
 import { login, registration } from '../../../http/userAPI';
 import { isEmailValid } from '../lib';
 import styles from './LoginForm.module.scss';
+
+interface ErrorResponse {
+  message: string;
+}
 
 const LoginForm = () => {
   const location = useLocation();
@@ -21,6 +26,8 @@ const LoginForm = () => {
   const [emailValidStatus, setEmailValidStatus] = useState<boolean>(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);
 
+  const [authLoginError, setAuthLoginError] = useState<string>('');
+
   const handleLoginClick = async () => {
     try {
       const user = isLoginRoute
@@ -29,13 +36,13 @@ const LoginForm = () => {
 
       userStore.setUser(user);
       userStore.setIsAuth(true);
-
       navigate(ROUTE.MAIN);
     } catch (error) {
       // eslint-disable-next-line no-console
-      console.log(error);
-      // eslint-disable-next-line no-alert
-      alert((error as Error).message ?? 'An error ocurred');
+      console.error(error);
+
+      const { response } = error as AxiosError<ErrorResponse>;
+      setAuthLoginError(response?.data.message || 'An error ocurred');
     }
   };
 
@@ -78,6 +85,7 @@ const LoginForm = () => {
         onChange={(e) => setPassword(e.target.value)}
         placeholder="Password"
       />
+      <div className={styles.error}>{authLoginError}</div>
 
       {!isLoginRoute && (
         <>

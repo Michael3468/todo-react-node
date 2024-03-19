@@ -1,4 +1,3 @@
-import { AxiosResponse } from 'axios';
 import jwtDecode from 'jwt-decode';
 
 import { $authHost, $host } from '.';
@@ -20,7 +19,8 @@ const registration = async (
     lastName,
     patronymic,
   });
-  localStorage.setItem('token', data.token); // TODO token to userStore
+
+  localStorage.setItem('token', data.token);
 
   return jwtDecode(data.token);
 };
@@ -39,8 +39,7 @@ const check = async (): Promise<IUser> => {
 };
 
 const getAllUsers = async (): Promise<IUser[]> => {
-  const response: AxiosResponse<{ users: IUser[] }> = await $host.get('api/user/get-all-users');
-  const { data } = response;
+  const { data } = await $host.get('api/user/get-all-users');
   return data.users;
 };
 
