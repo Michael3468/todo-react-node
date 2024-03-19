@@ -54,6 +54,21 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, todoId, todoText, onHi
   };
 
   useEffect(() => {
+    if (todoText === 'Create') {
+      setCaption('');
+      setDescription('');
+      setFinishDate(null);
+      setPriority('');
+      setStatus('');
+      if (userStore.user) {
+        setCreator(userStore.user.login);
+      }
+      setResponsible('');
+      setResponsibleLogin('');
+    }
+  }, [todoText, userStore.user]);
+
+  useEffect(() => {
     if (todoId) {
       const currTodo = todoStore.getTodoById(todoId);
       if (currTodo) {
