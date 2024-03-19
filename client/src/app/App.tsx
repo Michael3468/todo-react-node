@@ -14,11 +14,10 @@ const App = observer(() => {
   const { userStore } = useContext(StoreContext);
   const [loading, setLoading] = useState<boolean>(true);
 
-  // TODO: change 'data' to something more specific (everywhere)
   useEffect(() => {
     check()
-      .then((data) => {
-        userStore.setUser(data);
+      .then((user) => {
+        userStore.setUser(user);
         userStore.setIsAuth(true);
       })
       .catch((error) => {

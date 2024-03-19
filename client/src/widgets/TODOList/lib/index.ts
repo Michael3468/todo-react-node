@@ -1,5 +1,6 @@
 import getTodoCaptionColor, { TCaptionColors } from './getTodoCaptionColor';
+import groupTodosByFinishDate from './groupTodosByFinishDate';
 import sortTodos from './sortTodos';
 
 export type { TCaptionColors };
-export { sortTodos, getTodoCaptionColor };
+export { getTodoCaptionColor, groupTodosByFinishDate, sortTodos };
