@@ -5,14 +5,25 @@ import { Col, Row, Spinner } from 'react-bootstrap';
 import { StoreContext } from '../../index';
 import { RDropdown } from '../../shared/ui';
 import { ITodo } from '../../types';
-import { sortTodos } from './lib';
-import { SortConst, SortAdminConst, TSortAdminConst } from './TODOList.types';
+import { groupTodosByFinishDate, sortTodos } from './lib';
+import {
+  SortConst,
+  SortAdminConst,
+  TSortAdminConst,
+  GroupByFinishDateConst,
+  TGroupByFinishDateConst,
+} from './TODOList.types';
 import { TODOItem } from './ui';
 
 const TODOList = observer(() => {
   const { todoStore, userStore } = useContext(StoreContext);
   const [todos, setTodos] = useState<ITodo[]>([]);
+  const [filteredTodos, setFilteredTodos] = useState<ITodo[]>([]);
   const [sort, setSort] = useState<TSortAdminConst | string>('last updated');
+  const [groupByFinishDate, setGroupByFinishDate] = useState<TGroupByFinishDateConst | string>(
+    'all',
+  );
+  const [isGroupDropdownVisible, setIsGroupDropdownVisible] = useState<boolean>(false);
 
   const getUserTodos = useCallback(
     (login: string): ITodo[] => todoStore.todos.filter((todo) => todo.responsible === login),
@@ -44,6 +55,19 @@ const TODOList = observer(() => {
     sort,
   ]);
 
+  useEffect(() => {
+    if ((sort as TSortAdminConst) === 'finish date') {
+      setIsGroupDropdownVisible(true);
+    } else {
+      setIsGroupDropdownVisible(false);
+    }
+  }, [sort]);
+
+  useEffect(() => {
+    const gTodos = groupTodosByFinishDate(groupByFinishDate, todos);
+    setFilteredTodos(gTodos);
+  }, [groupByFinishDate, todos]);
+
   return (
     <div>
       {todoStore.isLoading ? (
@@ -65,17 +89,28 @@ const TODOList = observer(() => {
             </div>
           ) : (
             <>
-              {todos.length > 0 && (
-                <RDropdown
-                  variable={sort}
-                  setVariable={setSort}
-                  toggleText="Sort by"
-                  itemsArray={
-                    userStore.user?.role === 'ADMIN' ? [...SortAdminConst] : [...SortConst]
-                  }
-                />
+              {filteredTodos.length > 0 && (
+                <>
+                  <RDropdown
+                    variable={sort}
+                    setVariable={setSort}
+                    toggleText="Sort by"
+                    itemsArray={
+                      userStore.user?.role === 'ADMIN' ? [...SortAdminConst] : [...SortConst]
+                    }
+                  />
+
+                  {isGroupDropdownVisible && (
+                    <RDropdown
+                      variable={groupByFinishDate}
+                      setVariable={setGroupByFinishDate}
+                      toggleText="Group by"
+                      itemsArray={[...GroupByFinishDateConst]}
+                    />
+                  )}
+                </>
               )}
-              {todos.map((todo) => (
+              {filteredTodos.map((todo) => (
                 <Col key={todo.id} sm={12} lg={12}>
                   <TODOItem todo={todo} />
                 </Col>

@@ -1,8 +1,10 @@
-export const SortConst = ['last updated', 'finish date'] as const;
-type TSortConst = (typeof SortConst)[number];
+export const GroupByFinishDateConst = ['day', 'week', 'more than week', 'all'] as const;
+type TGroupByFinishDateConst = (typeof GroupByFinishDateConst)[number];
 
 export const SortAdminConst = ['last updated', 'finish date', 'responsible'] as const;
 type TSortAdminConst = (typeof SortAdminConst)[number];
 
-// eslint-disable-next-line import/prefer-default-export
-export type { TSortConst, TSortAdminConst };
+export const SortConst = ['last updated', 'finish date'] as const;
+type TSortConst = (typeof SortConst)[number];
+
+export type { TGroupByFinishDateConst, TSortAdminConst, TSortConst };
