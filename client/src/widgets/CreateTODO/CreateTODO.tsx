@@ -71,6 +71,8 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, todoId, todoText, onHi
       setStatus(todo.status);
       setCreator(todo.creator);
       setResponsible(todo.responsible);
+
+      setResponsibleLogin(todo.responsible);
     }
   }, [todo]);
 
