@@ -16,8 +16,8 @@ const Todo = sequelize.define<ITodo, ITodoAttributes>('todo', {
     unique: false,
     allowNull: false,
   },
-  creator: { type: DataTypes.INTEGER, unique: false, allowNull: false },
-  responsible: { type: DataTypes.INTEGER, unique: false, allowNull: false },
+  creator: { type: DataTypes.STRING, unique: false, allowNull: false },
+  responsible: { type: DataTypes.STRING, unique: false, allowNull: true },
 });
 
 export default Todo;
