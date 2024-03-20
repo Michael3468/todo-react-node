@@ -5,7 +5,7 @@ import { Col, Row, Spinner } from 'react-bootstrap';
 import { StoreContext } from '../../index';
 import { RDropdown } from '../../shared/ui';
 import { ITodo } from '../../types';
-import { groupTodosByFinishDate, sortTodos } from './lib';
+import { filterTodosByResponsible, groupTodosByFinishDate, sortTodos } from './lib';
 import {
   SortConst,
   SortAdminConst,
@@ -23,7 +23,10 @@ const TODOList = observer(() => {
   const [groupByFinishDate, setGroupByFinishDate] = useState<TGroupByFinishDateConst | string>(
     'all',
   );
+  const [responsibleToGroupBy, setResponsibleToGroupBy] = useState<string>('');
+  const [responsibles, setResponsibles] = useState<string[]>([]);
   const [isGroupDropdownVisible, setIsGroupDropdownVisible] = useState<boolean>(false);
+  const [isResponsibleDropdownVisible, setIsResponsibleDropdownVisible] = useState<boolean>(false);
 
   const getUserTodos = useCallback(
     (login: string): ITodo[] => todoStore.todos.filter((todo) => todo.responsible === login),
@@ -31,7 +34,17 @@ const TODOList = observer(() => {
   );
 
   useEffect(() => {
-    todoStore.fetchAllTodos();
+    const getResponsibles = async () => {
+      await todoStore.fetchAllTodos();
+
+      const resp: string[] = todoStore.todos.map((todo) => todo.responsible);
+      const uniqueResp: string[] = resp.filter(
+        (value, index, self) => self.indexOf(value) === index,
+      );
+      setResponsibles(uniqueResp);
+    };
+
+    getResponsibles();
   }, [todoStore]);
 
   useEffect(() => {
@@ -58,8 +71,13 @@ const TODOList = observer(() => {
   useEffect(() => {
     if ((sort as TSortAdminConst) === 'finish date') {
       setIsGroupDropdownVisible(true);
+      setIsResponsibleDropdownVisible(false);
+    } else if ((sort as TSortAdminConst) === 'responsible') {
+      setIsResponsibleDropdownVisible(true);
+      setIsGroupDropdownVisible(false);
     } else {
       setIsGroupDropdownVisible(false);
+      setIsResponsibleDropdownVisible(false);
     }
   }, [sort]);
 
@@ -67,6 +85,18 @@ const TODOList = observer(() => {
     const gTodos = groupTodosByFinishDate(groupByFinishDate, todos);
     setFilteredTodos(gTodos);
   }, [groupByFinishDate, todos]);
+
+  useEffect(() => {
+    if (responsibleToGroupBy) {
+      if (responsibleToGroupBy === 'all') {
+        const sTodos = sortTodos(todos, 'finish date');
+        setFilteredTodos(sTodos);
+      } else {
+        const responsibleTodos = filterTodosByResponsible(responsibleToGroupBy, todos);
+        setFilteredTodos(responsibleTodos);
+      }
+    }
+  }, [responsibleToGroupBy, todos]);
 
   return (
     <div>
@@ -106,6 +136,15 @@ const TODOList = observer(() => {
                       setVariable={setGroupByFinishDate}
                       toggleText="Group by"
                       itemsArray={[...GroupByFinishDateConst]}
+                    />
+                  )}
+
+                  {isResponsibleDropdownVisible && (
+                    <RDropdown
+                      variable={responsibleToGroupBy}
+                      setVariable={setResponsibleToGroupBy}
+                      toggleText="Group by"
+                      itemsArray={['all', ...responsibles]}
                     />
                   )}
                 </>
