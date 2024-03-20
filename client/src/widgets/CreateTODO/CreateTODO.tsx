@@ -5,7 +5,7 @@ import { Button, Form, Modal } from 'react-bootstrap';
 import { TodoPriorities, TodoStatuses } from '.';
 import { StoreContext } from '../..';
 import { createTODO, editTODO } from '../../http/todoAPI';
-import { getAllUsers } from '../../http/userAPI';
+import { getUsers } from '../../shared/lib';
 import { RDropdown } from '../../shared/ui';
 import { ITodo, IUser } from '../../types';
 import { TTodoText } from './CreateTODO.types';
@@ -104,18 +104,6 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, todoId, todoText, onHi
       setCreator(userStore.user.login);
     }
   }, [userStore]);
-
-  const getUsers = async () => {
-    let users;
-    try {
-      users = await getAllUsers();
-      return users;
-    } catch (error) {
-      // eslint-disable-next-line no-console
-      console.log(error);
-    }
-    return users;
-  };
 
   useEffect(() => {
     const fetchUsers = async () => {

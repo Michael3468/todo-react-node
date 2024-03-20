@@ -15,6 +15,7 @@ interface IUserControllerRegistrationRequest {
   firstName: string;
   lastName: string;
   patronymic: string;
+  supervisor: string;
 }
 
 export type { IUserControllerCheckRequest, IUserControllerRegistrationRequest };

@@ -10,6 +10,7 @@ const registration = async (
   firstName: string,
   lastName: string,
   patronymic: string,
+  supervisor: string,
 ): Promise<IUser> => {
   const { data } = await $host.post('api/user/registration', {
     login,
@@ -18,6 +19,7 @@ const registration = async (
     firstName,
     lastName,
     patronymic,
+    supervisor,
   });
 
   localStorage.setItem('token', data.token);
