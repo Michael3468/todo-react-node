@@ -44,10 +44,17 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, todoId, todoText, onHi
     formData.append('responsible', responsible ? responsible.toString() : '');
 
     if (todoText === 'Create') {
-      await createTODO(formData).then(() => onHide());
+      await createTODO(formData)
+        .then(() => onHide())
+        // eslint-disable-next-line no-console
+        .catch((error) => console.error(error));
     } else {
       formData.append('id', todoId ? todoId.toString() : '');
-      await editTODO(formData).then(() => onHide());
+
+      await editTODO(formData)
+        .then(() => onHide())
+        // eslint-disable-next-line no-console
+        .catch((error) => console.error(error));
     }
 
     todoStore.fetchAllTodos();
@@ -108,15 +115,21 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, todoId, todoText, onHi
   useEffect(() => {
     const fetchUsers = async () => {
       const allUsersArr = await getUsers();
+
       if (allUsersArr) {
         setAllUsers(allUsersArr);
-        const userLoginsArr = allUsersArr.map((user) => user.login);
+
+        const subordinateUsers = allUsersArr.filter(
+          (user) => user.supervisor === userStore.user?.login,
+        );
+
+        const userLoginsArr = subordinateUsers.map((user) => user.login);
         setUserLogins(userLoginsArr);
       }
     };
 
     fetchUsers();
-  }, []);
+  }, [userStore.user?.login]);
 
   useEffect(() => {
     const responsibleUser = allUsers.filter((user) => user.login === responsibleLogin);

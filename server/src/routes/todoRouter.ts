@@ -7,7 +7,7 @@ import checkRole from '../middleware/checkRoleMiddleware';
 const todoRouter = Router();
 const todoController = new TodoController();
 
-todoRouter.post('/', checkRole(USER_ROLE.ADMIN), todoController.create);
+todoRouter.post('/', checkRole(USER_ROLE.USER), todoController.create);
 todoRouter.patch('/', todoController.update);
 todoRouter.get('/', todoController.getAll);
 

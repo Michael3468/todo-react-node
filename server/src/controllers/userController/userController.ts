@@ -83,7 +83,11 @@ class UserController {
     try {
       const users = await User.findAll();
 
-      const modifiedUsers = users.map((user) => ({ id: user.id, login: user.login }));
+      const modifiedUsers = users.map((user) => ({
+        id: user.id,
+        login: user.login,
+        supervisor: user.supervisor,
+      }));
 
       return res.json({ users: modifiedUsers });
     } catch (error) {

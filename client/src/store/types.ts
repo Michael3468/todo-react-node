@@ -10,6 +10,7 @@ interface IUser {
   name: string;
   lastName: string;
   patronymic: string;
+  supervisor: string;
 }
 
 export type { IUser, TUserRole };
