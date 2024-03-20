@@ -33,7 +33,7 @@ const TODOList = observer(() => {
       const responsibleTodos = todoStore.todos.filter((todo) => todo.responsible === login);
       const creatorTodos = todoStore.todos.filter((todo) => todo.creator === login);
 
-      return [...responsibleTodos, ...creatorTodos];
+      return Array.from(new Set([...responsibleTodos, ...creatorTodos]));
     },
     [todoStore.todos],
   );
