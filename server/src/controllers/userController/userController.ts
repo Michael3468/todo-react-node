@@ -19,6 +19,7 @@ class UserController {
         firstName,
         lastName,
         patronymic,
+        supervisor,
       }: IUserControllerRegistrationRequest = req.body;
       if (!login || !password) {
         return next(ApiError.badRequest({ message: 'Incorrect login or password' }));
@@ -37,6 +38,7 @@ class UserController {
         firstName,
         lastName,
         patronymic,
+        supervisor,
       });
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const token = generateJwt(user.id, user.login, user.role);

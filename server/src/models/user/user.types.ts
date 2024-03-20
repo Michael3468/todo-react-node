@@ -8,7 +8,7 @@ interface IUserAttributes {
   firstName: string;
   lastName: string;
   patronymic: string;
-  supervisor: number;
+  supervisor: string;
 }
 interface IUser extends IUserAttributes, Model {}
 

@@ -5,6 +5,8 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { StoreContext } from '../../..';
 import { ROUTE } from '../../../constants';
 import { login, registration } from '../../../http/userAPI';
+import { getUsers } from '../../../shared/lib';
+import { RDropdown } from '../../../shared/ui';
 import { isEmailValid } from '../lib';
 import styles from './LoginForm.module.scss';
 
@@ -27,12 +29,14 @@ const LoginForm = () => {
   const [isButtonDisabled, setIsButtonDisabled] = useState<boolean>(true);
 
   const [authLoginError, setAuthLoginError] = useState<string>('');
+  const [responsibles, setResponsibles] = useState<string[]>([]);
+  const [supervisor, setSupervisor] = useState<string>('');
 
   const handleLoginClick = async () => {
     try {
       const user = isLoginRoute
         ? await login(email, password)
-        : await registration(email, password, firstName, lastName, patronymic);
+        : await registration(email, password, firstName, lastName, patronymic, supervisor);
 
       userStore.setUser(user);
       userStore.setIsAuth(true);
@@ -49,6 +53,18 @@ const LoginForm = () => {
   const handleEmailInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
   };
+
+  useEffect(() => {
+    const getResponsibles = async () => {
+      const allUsers = await getUsers();
+      const resp = allUsers?.map((user) => user.login);
+      if (resp) {
+        setResponsibles(resp);
+      }
+    };
+
+    getResponsibles();
+  }, []);
 
   useEffect(() => {
     setEmailValidStatus(isEmailValid(email));
@@ -111,6 +127,13 @@ const LoginForm = () => {
             value={patronymic}
             onChange={(e) => setPatronymic(e.target.value)}
             placeholder="Patronymic Name"
+          />
+
+          <RDropdown
+            variable={supervisor}
+            setVariable={setSupervisor}
+            toggleText="Supervisor"
+            itemsArray={[...responsibles]}
           />
         </>
       )}

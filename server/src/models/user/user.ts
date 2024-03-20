@@ -15,7 +15,7 @@ const User = sequelize.define<IUser, IUserAttributes>('user', {
   firstName: { type: DataTypes.STRING, unique: false },
   lastName: { type: DataTypes.STRING, unique: false },
   patronymic: { type: DataTypes.STRING, unique: false },
-  supervisor: { type: DataTypes.INTEGER, unique: false },
+  supervisor: { type: DataTypes.STRING, unique: false },
 });
 
 export default User;
