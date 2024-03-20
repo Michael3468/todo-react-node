@@ -1,6 +1,5 @@
 const USER_ROLE = {
   USER: 'USER',
-  ADMIN: 'ADMIN',
 };
 
 // eslint-disable-next-line import/prefer-default-export
