@@ -5,7 +5,12 @@ import { Col, Row, Spinner } from 'react-bootstrap';
 import { StoreContext } from '../../index';
 import { RDropdown } from '../../shared/ui';
 import { ITodo } from '../../types';
-import { filterTodosByResponsible, groupTodosByFinishDate, sortTodos } from './lib';
+import {
+  checkIsUserSupervisor,
+  filterTodosByResponsible,
+  groupTodosByFinishDate,
+  sortTodos,
+} from './lib';
 import {
   SortConst,
   SortAdminConst,
@@ -27,6 +32,7 @@ const TODOList = observer(() => {
   const [responsibles, setResponsibles] = useState<string[]>([]);
   const [isGroupDropdownVisible, setIsGroupDropdownVisible] = useState<boolean>(false);
   const [isResponsibleDropdownVisible, setIsResponsibleDropdownVisible] = useState<boolean>(false);
+  const [isUserSupervisor, setIsUserSupervisor] = useState<boolean>(false);
 
   const getUserTodos = useCallback(
     (login: string): ITodo[] => {
@@ -37,6 +43,16 @@ const TODOList = observer(() => {
     },
     [todoStore.todos],
   );
+
+  useEffect(() => {
+    if (userStore.user?.login) {
+      checkIsUserSupervisor(userStore.user?.login).then((isSupervisor) => {
+        if (typeof isSupervisor === 'boolean') {
+          setIsUserSupervisor(isSupervisor);
+        }
+      });
+    }
+  }, [userStore.user?.login]);
 
   useEffect(() => {
     const getResponsibles = async () => {
@@ -53,16 +69,11 @@ const TODOList = observer(() => {
   }, [todoStore]);
 
   useEffect(() => {
-    if (userStore.isAuth) {
-      if (userStore.user?.role === 'ADMIN') {
-        const sortedTodos = sortTodos(todoStore.todos, sort as TSortAdminConst);
-        setTodos(sortedTodos);
-      } else if (userStore.user?.role === 'USER') {
-        const userTodos = getUserTodos(userStore.user?.login);
+    if (userStore.isAuth && userStore.user?.role === 'USER') {
+      const userTodos: ITodo[] = getUserTodos(userStore.user?.login);
 
-        const sortedTodos = sortTodos(userTodos, sort as TSortAdminConst);
-        setTodos(sortedTodos);
-      }
+      const sortedTodos = sortTodos(userTodos, sort as TSortAdminConst);
+      setTodos(sortedTodos);
     }
   }, [
     getUserTodos,
@@ -128,7 +139,7 @@ const TODOList = observer(() => {
                 variable={sort}
                 setVariable={setSort}
                 toggleText="Sort by"
-                itemsArray={userStore.user?.role === 'ADMIN' ? [...SortAdminConst] : [...SortConst]}
+                itemsArray={isUserSupervisor ? [...SortAdminConst] : [...SortConst]}
               />
 
               {isGroupDropdownVisible && (
