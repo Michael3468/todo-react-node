@@ -119,36 +119,31 @@ const TODOList = observer(() => {
             </div>
           ) : (
             <>
-              {filteredTodos.length > 0 && (
-                <>
-                  <RDropdown
-                    variable={sort}
-                    setVariable={setSort}
-                    toggleText="Sort by"
-                    itemsArray={
-                      userStore.user?.role === 'ADMIN' ? [...SortAdminConst] : [...SortConst]
-                    }
-                  />
+              <RDropdown
+                variable={sort}
+                setVariable={setSort}
+                toggleText="Sort by"
+                itemsArray={userStore.user?.role === 'ADMIN' ? [...SortAdminConst] : [...SortConst]}
+              />
 
-                  {isGroupDropdownVisible && (
-                    <RDropdown
-                      variable={groupByFinishDate}
-                      setVariable={setGroupByFinishDate}
-                      toggleText="Group by"
-                      itemsArray={[...GroupByFinishDateConst]}
-                    />
-                  )}
-
-                  {isResponsibleDropdownVisible && (
-                    <RDropdown
-                      variable={responsibleToGroupBy}
-                      setVariable={setResponsibleToGroupBy}
-                      toggleText="Group by"
-                      itemsArray={['all', ...responsibles]}
-                    />
-                  )}
-                </>
+              {isGroupDropdownVisible && (
+                <RDropdown
+                  variable={groupByFinishDate}
+                  setVariable={setGroupByFinishDate}
+                  toggleText="Group by"
+                  itemsArray={[...GroupByFinishDateConst]}
+                />
               )}
+
+              {isResponsibleDropdownVisible && (
+                <RDropdown
+                  variable={responsibleToGroupBy}
+                  setVariable={setResponsibleToGroupBy}
+                  toggleText="Group by"
+                  itemsArray={['all', ...responsibles]}
+                />
+              )}
+
               {filteredTodos.map((todo) => (
                 <Col key={todo.id} sm={12} lg={12}>
                   <TODOItem todo={todo} />
