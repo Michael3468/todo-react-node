@@ -124,7 +124,9 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, todoId, todoText, onHi
         );
 
         const userLoginsArr = subordinateUsers.map((user) => user.login);
-        setUserLogins(userLoginsArr);
+        if (userStore.user?.login) {
+          setUserLogins([...userLoginsArr, userStore.user.login]);
+        }
       }
     };
 
