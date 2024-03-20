@@ -29,7 +29,12 @@ const TODOList = observer(() => {
   const [isResponsibleDropdownVisible, setIsResponsibleDropdownVisible] = useState<boolean>(false);
 
   const getUserTodos = useCallback(
-    (login: string): ITodo[] => todoStore.todos.filter((todo) => todo.responsible === login),
+    (login: string): ITodo[] => {
+      const responsibleTodos = todoStore.todos.filter((todo) => todo.responsible === login);
+      const creatorTodos = todoStore.todos.filter((todo) => todo.creator === login);
+
+      return [...responsibleTodos, ...creatorTodos];
+    },
     [todoStore.todos],
   );
 
