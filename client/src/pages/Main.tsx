@@ -20,7 +20,11 @@ const Main = observer(() => {
       <Col>
         <Col md={12}>
           {userStore.isAuth && (
-            <Button variant="outline-dark" className="mt-4" onClick={() => handleCreateTodo()}>
+            <Button
+              variant="outline-dark"
+              className="w-100 mt-4 mb-2"
+              onClick={() => handleCreateTodo()}
+            >
               New TODO
             </Button>
           )}

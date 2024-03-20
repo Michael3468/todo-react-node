@@ -4,6 +4,7 @@
     "fileupload",
     "keepachangelog",
     "linebreak",
+    "responsibles",
     "stylelint",
     "todos",
     "tsbuildinfo"
