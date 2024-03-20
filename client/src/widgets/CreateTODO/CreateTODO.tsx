@@ -26,14 +26,15 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, todoId, todoText, onHi
   const [finishDate, setFinishDate] = useState<Date | null>(null);
   const [priority, setPriority] = useState<string>('');
   const [status, setStatus] = useState<string>('');
-  const [creator, setCreator] = useState<string | null>(null);
-  const [responsible, setResponsible] = useState<string | null>(null);
+  const [creator, setCreator] = useState<string>('');
+  const [responsible, setResponsible] = useState<string>('');
   const [responsibleLogin, setResponsibleLogin] = useState<string>('');
   const [allUsers, setAllUsers] = useState<IUser[]>([]);
   const [userLogins, setUserLogins] = useState<string[]>([]);
-  const [addTODODisabledButtonStatus, setAddTODODisabledButtonStatus] = useState<boolean>(true);
+  const [isAddTODOButtonDisabled, setIsAddTODOButtonDisabled] = useState<boolean>(true);
+  const [isEditDisabled, setIsEditDisabled] = useState<boolean>(false);
 
-  const handleTODO = async () => {
+  const handleTODOButtonClick = async () => {
     const formData = new FormData();
     formData.append('caption', caption);
     formData.append('description', description);
@@ -45,7 +46,16 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, todoId, todoText, onHi
 
     if (todoText === 'Create') {
       await createTODO(formData)
-        .then(() => onHide())
+        .then(() => {
+          onHide();
+          setCaption('');
+          setDescription('');
+          setFinishDate(null);
+          setPriority('');
+          setStatus('');
+          setCreator('');
+          setResponsible('');
+        })
         // eslint-disable-next-line no-console
         .catch((error) => console.error(error));
     } else {
@@ -59,6 +69,12 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, todoId, todoText, onHi
 
     todoStore.fetchAllTodos();
   };
+
+  useEffect(() => {
+    if (todoText === 'Create') {
+      setIsEditDisabled(false);
+    }
+  }, [todoText]);
 
   useEffect(() => {
     if (todoText === 'Create') {
@@ -80,9 +96,15 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, todoId, todoText, onHi
       const currTodo = todoStore.getTodoById(todoId);
       if (currTodo) {
         setTodo(currTodo);
+
+        if (currTodo.creator === userStore.user?.login) {
+          setIsEditDisabled(false);
+        } else {
+          setIsEditDisabled(true);
+        }
       }
     }
-  }, [todoId, todoStore, todoStore.todos]);
+  }, [todoId, todoStore, todoStore.todos, todoText, userStore.user?.login]);
 
   useEffect(() => {
     if (todo) {
@@ -99,12 +121,12 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, todoId, todoText, onHi
   }, [todo]);
 
   useEffect(() => {
-    if (caption && description && finishDate && priority) {
-      setAddTODODisabledButtonStatus(false);
+    if (caption && description && finishDate && priority && status && responsible) {
+      setIsAddTODOButtonDisabled(false);
     } else {
-      setAddTODODisabledButtonStatus(true);
+      setIsAddTODOButtonDisabled(true);
     }
-  }, [caption, description, finishDate, priority]);
+  }, [caption, description, finishDate, priority, status, responsible]);
 
   useEffect(() => {
     if (userStore.user?.id) {
@@ -124,7 +146,9 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, todoId, todoText, onHi
         );
 
         const userLoginsArr = subordinateUsers.map((user) => user.login);
-        setUserLogins(userLoginsArr);
+        if (userStore.user?.login) {
+          setUserLogins([...userLoginsArr, userStore.user.login]);
+        }
       }
     };
 
@@ -142,7 +166,13 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, todoId, todoText, onHi
   return (
     <Modal size="lg" centered show={show} onHide={onHide}>
       <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">{`${todoText} TODO`}</Modal.Title>
+        <Modal.Title id="contained-modal-title-vcenter">
+          {`${todoText} TODO ${
+            todoText === 'Edit'
+              ? `| Creator: ${todo?.creator === userStore.user?.login ? 'You' : todo?.creator}`
+              : ''
+          }`}
+        </Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -152,6 +182,7 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, todoId, todoText, onHi
             value={caption}
             onChange={(e) => setCaption(e.target.value)}
             placeholder="Enter caption"
+            disabled={isEditDisabled}
           />
 
           <Form.Control
@@ -159,6 +190,7 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, todoId, todoText, onHi
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             placeholder="Enter description"
+            disabled={isEditDisabled}
           />
 
           <Form.Control
@@ -167,6 +199,7 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, todoId, todoText, onHi
             onChange={(e) => setFinishDate(new Date(e.target.value))}
             placeholder="Enter finish date"
             type="date"
+            disabled={isEditDisabled}
           />
 
           <RDropdown
@@ -174,6 +207,7 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, todoId, todoText, onHi
             setVariable={setPriority}
             toggleText="Priority"
             itemsArray={[...TodoPriorities]}
+            disabled={isEditDisabled}
           />
 
           <RDropdown
@@ -188,6 +222,7 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, todoId, todoText, onHi
             setVariable={setResponsibleLogin}
             toggleText="Responsible"
             itemsArray={[...userLogins]}
+            disabled={isEditDisabled}
           />
         </Form>
       </Modal.Body>
@@ -199,8 +234,8 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, todoId, todoText, onHi
 
         <Button
           variant="outline-success"
-          disabled={addTODODisabledButtonStatus}
-          onClick={handleTODO}
+          disabled={isAddTODOButtonDisabled}
+          onClick={handleTODOButtonClick}
         >
           {`${todoText} TODO`}
         </Button>
