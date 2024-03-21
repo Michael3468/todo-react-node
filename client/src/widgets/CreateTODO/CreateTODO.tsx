@@ -53,7 +53,6 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, todoId, todoText, onHi
           setFinishDate(null);
           setPriority('');
           setStatus('');
-          setCreator('');
           setResponsible('');
         })
         // eslint-disable-next-line no-console
