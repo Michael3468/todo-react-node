@@ -69,7 +69,7 @@ const TODOList = observer(() => {
   }, [todoStore]);
 
   useEffect(() => {
-    if (userStore.isAuth && userStore.user?.role === 'USER') {
+    if (userStore.isAuth && userStore.user) {
       const userTodos: ITodo[] = getUserTodos(userStore.user?.login);
 
       const sortedTodos = sortTodos(userTodos, sort as TSortAdminConst);
@@ -79,9 +79,9 @@ const TODOList = observer(() => {
     getUserTodos,
     todoStore.todos,
     userStore.isAuth,
-    userStore.user?.role,
     userStore.user?.login,
     sort,
+    userStore.user,
   ]);
 
   useEffect(() => {

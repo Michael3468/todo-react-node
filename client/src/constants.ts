@@ -4,10 +4,6 @@ const ROUTE = {
   MAIN: '/',
 };
 
-const USER_ROLE = {
-  USER: 'USER',
-} as const;
-
 const mainTheme = {
   header: {
     height: 54,
@@ -22,4 +18,4 @@ const mainTheme = {
   },
 };
 
-export { ROUTE, USER_ROLE, mainTheme };
+export { ROUTE, mainTheme };
