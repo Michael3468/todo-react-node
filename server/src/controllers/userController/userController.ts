@@ -6,8 +6,8 @@ import { IUserControllerCheckRequest, IUserControllerRegistrationRequest } from 
 import ApiError from '../../error/ApiError';
 import { User } from '../../models';
 
-const generateJwt = (id: number, login: string, role: string): string =>
-  jwt.sign({ id, login, role }, process.env.SECRET_KEY as string, { expiresIn: '1h' });
+const generateJwt = (id: number, login: string): string =>
+  jwt.sign({ id, login }, process.env.SECRET_KEY as string, { expiresIn: '1h' });
 
 class UserController {
   async registration(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
@@ -15,7 +15,6 @@ class UserController {
       const {
         login,
         password,
-        role,
         firstName,
         lastName,
         patronymic,
@@ -33,7 +32,6 @@ class UserController {
       const hashPassword = await bcrypt.hash(password, 5);
       const user = await User.create({
         login,
-        role,
         password: hashPassword,
         firstName,
         lastName,
@@ -41,7 +39,7 @@ class UserController {
         supervisor,
       });
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const token = generateJwt(user.id, user.login, user.role);
+      const token = generateJwt(user.id, user.login);
 
       return res.json({ token, userId: user.id });
     } catch (error) {
@@ -62,7 +60,7 @@ class UserController {
         return next(ApiError.badRequest({ message: 'Password is not correct' }));
       }
 
-      const token = generateJwt(user.id, user.login, user.role);
+      const token = generateJwt(user.id, user.login);
       return res.json({ token, userId: user.id });
     } catch (error) {
       return next(ApiError.forbidden({ error: error as Error }));
@@ -71,8 +69,8 @@ class UserController {
 
   async check(req: Request, res: Response, next: NextFunction): Promise<Response | void> {
     try {
-      const { id, login, role } = (req as IUserControllerCheckRequest).user;
-      const token = generateJwt(id, login, role);
+      const { id, login } = (req as IUserControllerCheckRequest).user;
+      const token = generateJwt(id, login);
       return res.json({ token });
     } catch (error) {
       return next(ApiError.forbidden({ error: error as Error }));

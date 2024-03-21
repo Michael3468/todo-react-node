@@ -1,7 +1,6 @@
 import jwtDecode from 'jwt-decode';
 
 import { $authHost, $host } from '.';
-import { USER_ROLE } from '../constants';
 import { IUser } from '../types';
 
 const registration = async (
@@ -15,7 +14,6 @@ const registration = async (
   const { data } = await $host.post('api/user/registration', {
     login,
     password,
-    role: USER_ROLE.USER,
     firstName,
     lastName,
     patronymic,

@@ -2,9 +2,9 @@ import { NextFunction, Request, Response } from 'express';
 import jwt, { Jwt } from 'jsonwebtoken';
 
 import ApiError from '../error/ApiError';
-import { ICheckRoleMiddlewareRequest, TUserRole } from './types';
+import { ICheckRoleMiddlewareRequest } from './types';
 
-function checkRole(role: TUserRole) {
+function checkRole() {
   return function check(req: Request, res: Response, next: NextFunction): Response | void {
     if (req.method === 'OPTIONS') {
       next();
@@ -22,9 +22,6 @@ function checkRole(role: TUserRole) {
       }
 
       const decoded = jwt.verify(token, secretKey) as jwt.JwtPayload;
-      if (decoded.role !== role) {
-        return res.status(403).json({ message: 'Access denied' });
-      }
 
       (req as ICheckRoleMiddlewareRequest).user = decoded as Jwt;
       return next();
