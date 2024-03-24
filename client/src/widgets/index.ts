@@ -1,5 +1,6 @@
 import CreateTODO from './CreateTODO';
-import LoginForm from './loginForm';
+import Header from './Header';
+import LoginForm from './LoginForm';
 import TODOList from './TODOList';
 
-export { CreateTODO, LoginForm, TODOList };
+export { CreateTODO, Header, LoginForm, TODOList };

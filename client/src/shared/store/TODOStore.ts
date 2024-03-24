@@ -1,6 +1,6 @@
 import { makeAutoObservable, toJS } from 'mobx';
 
-import { getAllTODOS } from '../http/todoAPI';
+import { getAllTODOS } from '../api';
 import { ITodo } from '../types';
 
 class TODOStore {

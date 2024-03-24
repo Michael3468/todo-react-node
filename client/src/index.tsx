@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom/client';
 
 import App from './app/App';
 import reportWebVitals from './reportWebVitals';
-import { CreateTODOStore, UserStore, TODOStore } from './store';
+import { CreateTODOStore, UserStore, TODOStore } from './shared/store';
 
 interface IStoreContext {
   createTodoStore: CreateTODOStore;

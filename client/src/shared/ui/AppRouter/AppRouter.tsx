@@ -1,7 +1,7 @@
 import { observer } from 'mobx-react-lite';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
-import { publicRoutes } from '../routes';
+import { publicRoutes } from './model';
 
 const AppRouter = observer(() => (
   <Routes>

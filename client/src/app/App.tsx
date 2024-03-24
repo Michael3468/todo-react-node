@@ -5,10 +5,11 @@ import { BrowserRouter } from 'react-router-dom';
 
 import { StoreContext } from '..';
 
-import { AppRouter, Navigation } from '../components';
-import { check } from '../http/userAPI';
+import { check } from '../shared/api';
+import { AppRouter } from '../shared/ui';
+import { Header } from '../widgets';
 
-import './main.scss';
+import './App.scss';
 
 const App = observer(() => {
   const { userStore } = useContext(StoreContext);
@@ -46,7 +47,7 @@ const App = observer(() => {
 
   return (
     <BrowserRouter>
-      <Navigation />
+      <Header />
       <AppRouter />
     </BrowserRouter>
   );

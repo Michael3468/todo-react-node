@@ -1,8 +1,7 @@
 import { AxiosResponse } from 'axios';
 
-// TODO $host remove
-import { $host, $authHost } from '.';
 import { ITodo } from '../types';
+import { $host, $authHost } from './AxiosInstanses';
 
 const createTODO = async (todo: FormData): Promise<ITodo> => {
   const { data } = await $authHost.post('api/todo', todo);

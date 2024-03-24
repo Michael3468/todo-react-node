@@ -4,10 +4,9 @@ import { Button, Form, Modal } from 'react-bootstrap';
 
 import { TodoPriorities, TodoStatuses } from '.';
 import { StoreContext } from '../..';
-import { createTODO, editTODO } from '../../http/todoAPI';
-import { getUsers } from '../../shared/lib';
+import { createTODO, editTODO, getAllUsers } from '../../shared/api';
+import { ITodo, IUser } from '../../shared/types';
 import { RDropdown } from '../../shared/ui';
-import { ITodo, IUser } from '../../types';
 import { TTodoText } from './CreateTODO.types';
 
 type CreateTODOProps = {
@@ -30,7 +29,7 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, todoId, todoText, onHi
   const [responsible, setResponsible] = useState<string>('');
   const [responsibleLogin, setResponsibleLogin] = useState<string>('');
   const [allUsers, setAllUsers] = useState<IUser[]>([]);
-  const [userLogins, setUserLogins] = useState<string[]>([]);
+  const [responsibleUsersLogins, setResponsibleUsersLogins] = useState<string[]>([]);
   const [isAddTODOButtonDisabled, setIsAddTODOButtonDisabled] = useState<boolean>(true);
   const [isEditDisabled, setIsEditDisabled] = useState<boolean>(false);
 
@@ -134,24 +133,23 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, todoId, todoText, onHi
   }, [userStore]);
 
   useEffect(() => {
-    const fetchUsers = async () => {
-      const allUsersArr = await getUsers();
+    getAllUsers()
+      .then((users) => {
+        if (users) {
+          setAllUsers(users);
 
-      if (allUsersArr) {
-        setAllUsers(allUsersArr);
+          const subordinateUsers = users.filter(
+            (user) => user.supervisor === userStore.user?.login,
+          );
 
-        const subordinateUsers = allUsersArr.filter(
-          (user) => user.supervisor === userStore.user?.login,
-        );
-
-        const userLoginsArr = subordinateUsers.map((user) => user.login);
-        if (userStore.user?.login) {
-          setUserLogins([...userLoginsArr, userStore.user.login]);
+          const userLoginsArr = subordinateUsers.map((user) => user.login);
+          if (userStore.user?.login) {
+            setResponsibleUsersLogins([...userLoginsArr, userStore.user.login]);
+          }
         }
-      }
-    };
-
-    fetchUsers();
+      })
+      // eslint-disable-next-line no-console
+      .catch((error) => console.error(error));
   }, [userStore.user?.login]);
 
   useEffect(() => {
@@ -220,7 +218,7 @@ const CreateTODO: FC<CreateTODOProps> = observer(({ show, todoId, todoText, onHi
             variable={responsibleLogin}
             setVariable={setResponsibleLogin}
             toggleText="Responsible"
-            itemsArray={[...userLogins]}
+            itemsArray={[...responsibleUsersLogins]}
             disabled={isEditDisabled}
           />
         </Form>

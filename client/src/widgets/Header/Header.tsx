@@ -3,12 +3,11 @@ import { useContext } from 'react';
 import { Container, Navbar, Nav } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 
-import { ROUTE, mainTheme } from '../constants';
-import { StoreContext } from '../index';
-import LoginButton from './LoginButton';
-import LogoutButton from './LogoutButton';
+import { StoreContext } from '../../index';
+import { ROUTE, mainTheme } from '../../shared/model/constants';
+import { LoginButton, LogoutButton } from './ui';
 
-const Navigation = observer(() => {
+const Header = observer(() => {
   const { userStore } = useContext(StoreContext);
 
   return (
@@ -19,9 +18,12 @@ const Navigation = observer(() => {
         </NavLink>
 
         {userStore.isAuth ? (
-          <Nav style={{ color: mainTheme.link.color }}>
-            <LogoutButton />
-          </Nav>
+          <>
+            <p style={{ color: mainTheme.link.color, margin: 0 }}>{userStore.user?.login}</p>
+            <Nav style={{ color: mainTheme.link.color }}>
+              <LogoutButton />
+            </Nav>
+          </>
         ) : (
           <Nav style={{ color: mainTheme.link.color }}>
             <LoginButton />
@@ -32,4 +34,4 @@ const Navigation = observer(() => {
   );
 });
 
-export default Navigation;
+export default Header;
