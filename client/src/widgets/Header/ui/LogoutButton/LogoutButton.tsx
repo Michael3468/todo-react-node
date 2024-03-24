@@ -18,7 +18,7 @@ const LogoutButton = () => {
   };
 
   return (
-    <Button variant="outline-light" className="ms-2 border-0" onClick={handleLogOutButton}>
+    <Button variant="outline-light" className="border-0" onClick={handleLogOutButton}>
       <IoMdLogOut className={`${styles.icon}`} style={{ fontSize: mainTheme.navbarIcon.size }} />
       <span className={`${styles.text}`}>Logout</span>
     </Button>

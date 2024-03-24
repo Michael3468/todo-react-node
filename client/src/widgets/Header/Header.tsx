@@ -18,9 +18,12 @@ const Header = observer(() => {
         </NavLink>
 
         {userStore.isAuth ? (
-          <Nav style={{ color: mainTheme.link.color }}>
-            <LogoutButton />
-          </Nav>
+          <>
+            <p style={{ color: mainTheme.link.color, margin: 0 }}>{userStore.user?.login}</p>
+            <Nav style={{ color: mainTheme.link.color }}>
+              <LogoutButton />
+            </Nav>
+          </>
         ) : (
           <Nav style={{ color: mainTheme.link.color }}>
             <LoginButton />
