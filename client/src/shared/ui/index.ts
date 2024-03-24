@@ -1,4 +1,4 @@
+import { AppRouter } from './AppRouter';
 import RDropdown from './RDropdown';
 
-// eslint-disable-next-line import/prefer-default-export
-export { RDropdown };
+export { AppRouter, RDropdown };

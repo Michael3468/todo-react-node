@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { ROUTE } from './constants';
-import { Auth, Main } from './pages';
+import { ROUTE } from '../../../../constants';
+import { Auth, Main } from '../../../../pages';
 
 type TRoute = {
   path: string;
@@ -23,5 +23,4 @@ const publicRoutes: TRoute[] = [
   },
 ];
 
-// eslint-disable-next-line import/prefer-default-export
-export { publicRoutes };
+export default publicRoutes;
