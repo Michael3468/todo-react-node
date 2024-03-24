@@ -1,4 +1,4 @@
-import { ITodo } from '../../../types';
+import { ITodo } from '../../../shared/types';
 import { TSortAdminConst } from '../TODOList.types';
 
 const sortTodos = (todosArr: ITodo[], sortType: TSortAdminConst): ITodo[] => {

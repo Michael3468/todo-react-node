@@ -3,8 +3,8 @@ import { useCallback, useContext, useEffect, useState } from 'react';
 import { Col, Row, Spinner } from 'react-bootstrap';
 
 import { StoreContext } from '../../index';
+import { ITodo } from '../../shared/types';
 import { RDropdown } from '../../shared/ui';
-import { ITodo } from '../../types';
 import {
   checkIsUserSupervisor,
   filterTodosByResponsible,

@@ -5,8 +5,8 @@ import { Button, Form, Modal } from 'react-bootstrap';
 import { TodoPriorities, TodoStatuses } from '.';
 import { StoreContext } from '../..';
 import { createTODO, editTODO, getAllUsers } from '../../shared/api';
+import { ITodo, IUser } from '../../shared/types';
 import { RDropdown } from '../../shared/ui';
-import { ITodo, IUser } from '../../types';
 import { TTodoText } from './CreateTODO.types';
 
 type CreateTODOProps = {

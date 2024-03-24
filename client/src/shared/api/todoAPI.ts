@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
 
-import { ITodo } from '../../types';
+import { ITodo } from '../types';
 import { $host, $authHost } from './AxiosInstanses';
 
 const createTODO = async (todo: FormData): Promise<ITodo> => {
