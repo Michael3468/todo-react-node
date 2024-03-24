@@ -1,6 +1,6 @@
 import { makeAutoObservable } from 'mobx';
 
-import { TTodoText } from '../shared/types';
+import { TTodoText } from '../types';
 
 class CreateTODOStore {
   private _visible: boolean;
