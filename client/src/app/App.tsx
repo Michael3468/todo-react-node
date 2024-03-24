@@ -9,7 +9,7 @@ import { check } from '../shared/api';
 import { AppRouter } from '../shared/ui';
 import { Header } from '../widgets';
 
-import './main.scss';
+import './App.scss';
 
 const App = observer(() => {
   const { userStore } = useContext(StoreContext);
