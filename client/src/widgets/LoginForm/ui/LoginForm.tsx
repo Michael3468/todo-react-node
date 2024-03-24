@@ -3,9 +3,8 @@ import { useContext, useEffect, useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 
 import { StoreContext } from '../../..';
-import { login, registration } from '../../../shared/api';
+import { getAllUsers, login, registration } from '../../../shared/api';
 import { ROUTE } from '../../../shared/model/constants';
-import { getUsers } from '../../../shared/model/lib';
 import { RDropdown } from '../../../shared/ui';
 import { isEmailValid } from '../lib';
 import styles from './LoginForm.module.scss';
@@ -55,15 +54,15 @@ const LoginForm = () => {
   };
 
   useEffect(() => {
-    const getResponsibles = async () => {
-      const allUsers = await getUsers();
-      const resp = allUsers?.map((user) => user.login);
-      if (resp) {
-        setResponsibles(resp);
-      }
-    };
-
-    getResponsibles();
+    getAllUsers()
+      .then((users) => {
+        const resp = users.map((user) => user.login);
+        if (resp) {
+          setResponsibles(resp);
+        }
+      })
+      // eslint-disable-next-line no-console
+      .catch((error) => console.error(error));
   }, []);
 
   useEffect(() => {

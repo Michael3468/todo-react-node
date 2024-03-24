@@ -46,11 +46,9 @@ const TODOList = observer(() => {
 
   useEffect(() => {
     if (userStore.user?.login) {
-      checkIsUserSupervisor(userStore.user?.login).then((isSupervisor) => {
-        if (typeof isSupervisor === 'boolean') {
-          setIsUserSupervisor(isSupervisor);
-        }
-      });
+      checkIsUserSupervisor(userStore.user?.login).then((isSupervisor) =>
+        setIsUserSupervisor(isSupervisor),
+      );
     }
   }, [userStore.user?.login]);
 
