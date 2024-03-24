@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { ROUTE } from '../../../../constants';
 import { Auth, Main } from '../../../../pages';
+import { ROUTE } from '../../../model/constants';
 
 type TRoute = {
   path: string;

@@ -1,4 +1,4 @@
-import { getAllUsers } from '../api';
+import { getAllUsers } from '../../api';
 
 const getUsers = async () => {
   let users;

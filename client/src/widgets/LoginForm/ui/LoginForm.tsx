@@ -3,9 +3,9 @@ import { useContext, useEffect, useState } from 'react';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 
 import { StoreContext } from '../../..';
-import { ROUTE } from '../../../constants';
 import { login, registration } from '../../../shared/api';
-import { getUsers } from '../../../shared/lib';
+import { ROUTE } from '../../../shared/model/constants';
+import { getUsers } from '../../../shared/model/lib';
 import { RDropdown } from '../../../shared/ui';
 import { isEmailValid } from '../lib';
 import styles from './LoginForm.module.scss';

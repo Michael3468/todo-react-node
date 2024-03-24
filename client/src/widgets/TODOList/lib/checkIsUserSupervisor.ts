@@ -1,4 +1,4 @@
-import { getUsers } from '../../../shared/lib';
+import { getUsers } from '../../../shared/model/lib';
 
 const checkIsUserSupervisor = async (login: string): Promise<boolean | undefined> =>
   getUsers()

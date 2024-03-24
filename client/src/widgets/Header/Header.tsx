@@ -3,8 +3,8 @@ import { useContext } from 'react';
 import { Container, Navbar, Nav } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 
-import { ROUTE, mainTheme } from '../../constants';
 import { StoreContext } from '../../index';
+import { ROUTE, mainTheme } from '../../shared/model/constants';
 import { LoginButton, LogoutButton } from './ui';
 
 const Header = observer(() => {
