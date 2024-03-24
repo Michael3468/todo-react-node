@@ -4,7 +4,7 @@ import { Button, Form, Modal } from 'react-bootstrap';
 
 import { TodoPriorities, TodoStatuses } from '.';
 import { StoreContext } from '../..';
-import { createTODO, editTODO } from '../../http/todoAPI';
+import { createTODO, editTODO } from '../../shared/api';
 import { getUsers } from '../../shared/lib';
 import { RDropdown } from '../../shared/ui';
 import { ITodo, IUser } from '../../types';

@@ -5,7 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 
 import { StoreContext } from '..';
 
-import { check } from '../http/userAPI';
+import { check } from '../shared/api';
 import { AppRouter } from '../shared/ui';
 import { Header } from '../widgets';
 

@@ -4,7 +4,7 @@ import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 
 import { StoreContext } from '../../..';
 import { ROUTE } from '../../../constants';
-import { login, registration } from '../../../http/userAPI';
+import { login, registration } from '../../../shared/api';
 import { getUsers } from '../../../shared/lib';
 import { RDropdown } from '../../../shared/ui';
 import { isEmailValid } from '../lib';

@@ -1,7 +1,7 @@
 import jwtDecode from 'jwt-decode';
 
-import { $authHost, $host } from '.';
-import { IUser } from '../types';
+import { IUser } from '../../types';
+import { $authHost, $host } from './AxiosInstanses';
 
 const registration = async (
   login: string,
