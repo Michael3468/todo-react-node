@@ -2,8 +2,8 @@ import { useContext } from 'react';
 import { Button } from 'react-bootstrap';
 import { IoMdLogOut } from 'react-icons/io';
 
-import { mainTheme } from '../../constants';
-import { StoreContext } from '../../index';
+import { mainTheme } from '../../../../constants';
+import { StoreContext } from '../../../../index';
 import styles from './LogoutButton.module.scss';
 
 const LogoutButton = () => {

@@ -2,7 +2,7 @@ import { Button } from 'react-bootstrap';
 import { IoMdLogIn } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
 
-import { ROUTE, mainTheme } from '../../constants';
+import { ROUTE, mainTheme } from '../../../../constants';
 import styles from './LoginButton.module.scss';
 
 const LoginButton = () => {

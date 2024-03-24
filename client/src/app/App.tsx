@@ -5,8 +5,9 @@ import { BrowserRouter } from 'react-router-dom';
 
 import { StoreContext } from '..';
 
-import { AppRouter, Navigation } from '../components';
+import { AppRouter } from '../components';
 import { check } from '../http/userAPI';
+import { Header } from '../widgets';
 
 import './main.scss';
 
@@ -46,7 +47,7 @@ const App = observer(() => {
 
   return (
     <BrowserRouter>
-      <Navigation />
+      <Header />
       <AppRouter />
     </BrowserRouter>
   );

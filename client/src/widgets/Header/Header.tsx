@@ -3,12 +3,11 @@ import { useContext } from 'react';
 import { Container, Navbar, Nav } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
 
-import { ROUTE, mainTheme } from '../constants';
-import { StoreContext } from '../index';
-import LoginButton from './LoginButton';
-import LogoutButton from './LogoutButton';
+import { ROUTE, mainTheme } from '../../constants';
+import { StoreContext } from '../../index';
+import { LoginButton, LogoutButton } from './ui';
 
-const Navigation = observer(() => {
+const Header = observer(() => {
   const { userStore } = useContext(StoreContext);
 
   return (
@@ -32,4 +31,4 @@ const Navigation = observer(() => {
   );
 });
 
-export default Navigation;
+export default Header;
